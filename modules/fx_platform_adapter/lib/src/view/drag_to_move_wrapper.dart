@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:window_manager/window_manager.dart';
 
-import '../data/global.dart' as global;
+import '../data/global.dart';
 
 class PreferredDragToMoveWrapper extends StatelessWidget
     implements PreferredSizeWidget {
@@ -32,7 +31,7 @@ class DragToMoveWrapper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (!global.kIsDesk) return child;
+    if (!kAppEnv.isDesktop) return child;
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onDoubleTap: !canDouble

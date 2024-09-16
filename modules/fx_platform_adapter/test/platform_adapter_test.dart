@@ -1,6 +1,6 @@
 // import 'package:flutter_test/flutter_test.dart';
 //
-// import 'package:platform_adapter/platform_adapter.dart';
+// import 'package:platform_adapter/fx_platform_adapter.dart';
 //
 // void main() {
 //   test('adds one to input values', () {

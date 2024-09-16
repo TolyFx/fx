@@ -16,5 +16,4 @@ abstract class AppStartAction<S> {
   /// 可跳转应用主界面,正常使用应用
   void onStartSuccess(BuildContext context, S state);
 
-
 }

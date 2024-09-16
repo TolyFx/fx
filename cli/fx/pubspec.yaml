@@ -1,0 +1,16 @@
+name: fx_cli
+description: Cli tool for fx framework.
+version: 0.0.1
+repository: https://github.com/TolyFx/fx/tree/main/cli/fx
+
+
+environment:
+  sdk: ^3.0.0
+
+# Add regular dependencies here.
+dependencies:
+  args: ^2.4.2
+
+dev_dependencies:
+  lints: ^4.0.0
+  test: ^1.24.0

@@ -8,12 +8,10 @@ class AppStartBloc<S> extends Cubit<AppStatus> {
 
   final AppStartRepository<S> repository;
   final AppStartAction<S> startAction;
-  final AppFixAction? fixAction;
 
   AppStartBloc({
     required this.repository,
     required this.startAction,
-    this.fixAction,
     this.minStartDurationMs = 600,
   }) : super(const AppStarting());
 
@@ -44,21 +42,5 @@ class AppStartBloc<S> extends Cubit<AppStatus> {
       await Future.delayed(const Duration(milliseconds: 50));
     }
     emit( AppStartSuccess(data));
-  }
-
-  void fixError() async {
-    if (state is AppStartFailed) {
-      AppStartFailed s = state as AppStartFailed;
-      emit(AppStartFailed(s.error, s.trace, FixType.fixing));
-      try {
-        /// 处理初始化异步任务
-        await repository.fixError(s.error, extra: s.trace);
-        emit(AppStartFailed(s.error, s.trace, FixType.fixed));
-        startApp();
-      } catch (e, s) {
-        emit(AppStartFailed(e, s,  FixType.fixError));
-        return;
-      }
-    }
   }
 }
