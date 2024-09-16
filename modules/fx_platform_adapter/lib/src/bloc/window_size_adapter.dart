@@ -1,7 +1,9 @@
 
 import 'package:flutter/material.dart';
-import 'package:platform_adapter/data/global.dart' as global;
+
 import 'package:window_manager/window_manager.dart';
+
+import '../data/global.dart' as g;
 
 
 class WindowSizeAdapter {
@@ -9,7 +11,7 @@ class WindowSizeAdapter {
     Size size = const Size(920, 680),
     Size minimumSize = const Size(640, 320),
   }) async {
-    if (global.kIsDesk) {
+    if (g.kAppEnv.isDesktop) {
       //仅对桌面端进行尺寸设置
       await windowManager.ensureInitialized();
       WindowOptions windowOptions = WindowOptions(

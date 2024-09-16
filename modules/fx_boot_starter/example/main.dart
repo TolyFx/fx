@@ -12,7 +12,6 @@ void main() {
     const AppStartScope<AppState>(
       repository: AppStartRepositoryImpl(),
       appStartAction: AppStartActionImpl(),
-      fixAction: AppFixActionImpl(),
       child: MyApp(),
     ),
   );

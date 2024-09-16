@@ -1,6 +1,6 @@
 name: fx_go_router_ext
-description: "go router extension to support tolyui tolyui_navigation"
-version: 0.0.1
+description: "go router extension to support tolyui#tolyui_navigation"
+version: 0.0.3
 homepage: https://github.com/TolyFx/fx
 repository: https://github.com/TolyFx/fx/tree/main/modules/fx_go_router_ext
 
