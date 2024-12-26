@@ -51,4 +51,5 @@ class AppEnv {
   bool get isDesktopUI => _checker.isDesktopUI;
 
   bool get isMobile => _checker.isMobile;
+
 }

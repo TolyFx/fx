@@ -1,6 +1,6 @@
 name: fx_platform_adapter
 description: "adapter platform ui in flutter app"
-version: 0.0.2+1
+version: 0.0.2+2
 homepage: https://github.com/TolyFx/fx
 repository: https://github.com/TolyFx/fx/tree/main/modules/fx_platform_adapter
 
@@ -11,7 +11,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  window_manager: 0.4.2 #桌面尺寸
+  window_manager: 0.4.3 #桌面尺寸
 
 dev_dependencies:
   flutter_test:

@@ -3,7 +3,7 @@ library fx_dao;
 export 'src/table/db_table.dart';
 export 'src/table/dao.dart';
 
-export 'src/model/query_args.dart';
+export 'src/model/model.dart';
 
 export 'src/database/has_database.dart';
 export 'src/database/db_open_mixin.dart';
