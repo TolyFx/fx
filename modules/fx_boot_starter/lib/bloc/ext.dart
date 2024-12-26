@@ -3,6 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'bloc.dart';
 
-extension FixContext on BuildContext {
-  void bloc<S>() => read<AppStartBloc<S>>();
+extension StartContext on BuildContext {
+  void startApp<S>() => read<AppStartBloc<S>>().startApp();
 }

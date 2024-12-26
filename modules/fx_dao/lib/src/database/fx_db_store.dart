@@ -1,14 +1,9 @@
 import 'dart:async';
+import '../../fx_dao.dart';
 
-import 'package:sqflite/sqflite.dart';
-
-import '../table/db_table.dart';
-import '../upgrade/db_migration.dart';
-import 'db_open_mixin.dart';
-import 'db_store.dart';
 
 abstract class FxDb extends DbStore with DbOpenMixin {
-  T call<T>() {
+  T call<T extends Dao>() {
     DbTable? table = _tableMap[T];
     if(table is T) return table as T;
     throw 'FxDb cast Exception::[${table.runtimeType} is not type: $T]';

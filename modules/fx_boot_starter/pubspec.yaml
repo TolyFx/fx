@@ -1,6 +1,6 @@
 name: fx_boot_starter
 description: "a app start package to help handle start easy."
-version: 0.1.0
+version: 0.1.1
 homepage: https://github.com/TolyFx/fx
 repository: https://github.com/TolyFx/fx/tree/main/modules/fx_boot_starter
 
