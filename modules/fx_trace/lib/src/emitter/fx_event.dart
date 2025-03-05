@@ -1,0 +1,3 @@
+class FxEvent {
+  const FxEvent();
+}

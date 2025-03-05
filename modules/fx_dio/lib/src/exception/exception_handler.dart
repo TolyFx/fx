@@ -1,14 +1,11 @@
-import 'package:flutter/foundation.dart';
-
 import 'trace.dart';
-
 
 typedef ExceptionCallback = void Function(Trace trace);
 
 void kDefaultErrorHandler(Trace trace) {
-  if(kDebugMode){
-    print("kDefaultHandler::${trace.code}::${trace.message}${trace.stack},");
-  }
+  // if(kDebugMode){
+  print("kDefaultHandler::${trace.code}::${trace.message}${trace.stack},");
+  // }
 }
 
 mixin TraceMixin {

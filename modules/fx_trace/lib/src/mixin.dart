@@ -1,3 +1,5 @@
+import 'package:fx_trace/src/model/trace/log_trace.dart';
+
 import 'model/model.dart';
 
 typedef ExceptionCallback = void Function(Trace trace);
@@ -11,7 +13,8 @@ class FxTrace with TraceMixin {
     _instance ??= FxTrace._();
     return _instance!;
   }
-  void emit(Trace trace){
+
+  void emit(Trace trace) {
     notifyTrace(trace);
   }
 }
@@ -23,6 +26,8 @@ mixin TraceMixin {
     _actions.add(listener);
   }
 
+  LogLevel get logLevel => LogLevel.debug;
+
   void removeTraceListener(ExceptionCallback listener) {
     _actions.remove(listener);
   }
@@ -32,6 +37,11 @@ mixin TraceMixin {
   }
 
   void notifyTrace(Trace trace) {
+    if (trace is LogTrace) {
+      bool isLowLever = trace.level.index < logLevel.index;
+      if (isLowLever) return;
+    }
+
     for (ExceptionCallback action in _actions) {
       action(trace);
     }

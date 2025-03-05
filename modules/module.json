@@ -1,0 +1,36 @@
+{
+  "name": "fx_framework",
+  "version": "0.0.1",
+  "children": [
+    {
+      "name": "fx_boot_starter",
+      "version": "0.1.1"
+    },
+    {
+      "name": "fx_trace",
+      "version": "0.0.4+1"
+    },
+    {
+      "name": "fx_dio",
+      "version": "0.0.4"
+    },
+    {
+      "name": "fx_dao",
+      "version": "0.0.3+1"
+    },
+    {
+      "name": "fx_go_router_ext",
+      "version": "0.0.5"
+    },
+    {
+      "name": "fx_platform_adapter",
+      "version": "0.0.3",
+      "children": [
+        {
+          "name": "fx_env",
+          "version": "0.0.1"
+        }
+      ]
+    }
+  ]
+}

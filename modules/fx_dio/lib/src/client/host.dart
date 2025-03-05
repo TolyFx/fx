@@ -14,7 +14,11 @@ abstract class Host with ClientMixin{
 
   String url({bool isDev = false}) {
     String server = value[env] ?? '';
-    return '${config.scheme}://$server:${config.port}${config.apiNest}';
+    String port = '';
+    if (config.port != null) {
+      port = ':${config.port}';
+    }
+    return '${config.scheme}://$server$port${config.apiNest}';
   }
 
   @override
@@ -23,12 +27,12 @@ abstract class Host with ClientMixin{
 
 class HostConfig {
   final String scheme;
-  final int port;
+  final int? port;
   final String apiNest;
 
   const HostConfig({
     this.scheme = 'https',
-    this.port = 80,
+    this.port,
     this.apiNest = '',
   });
 }

@@ -5,3 +5,6 @@
 ## 0.0.2+2
 * WindowButtons support set size
 * upgrade window_manager: 0.4.3
+
+## 0.0.3
+* split fx_env -> 0.0.1

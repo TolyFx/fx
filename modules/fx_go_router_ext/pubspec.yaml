@@ -1,6 +1,6 @@
 name: fx_go_router_ext
 description: "go router extension to support tolyui#tolyui_navigation"
-version: 0.0.3
+version: 0.0.5+1
 homepage: https://github.com/TolyFx/fx
 repository: https://github.com/TolyFx/fx/tree/main/modules/fx_go_router_ext
 
@@ -11,8 +11,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  go_router: 14.2.7
-  tolyui_navigation: 0.0.8+9
+  go_router: 14.8.0
+  tolyui_navigation: 0.1.0+3
 
 dev_dependencies:
   flutter_test:
