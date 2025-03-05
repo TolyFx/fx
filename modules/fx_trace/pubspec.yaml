@@ -1,6 +1,6 @@
 name: fx_trace
-description: "Easy to trace and listen error/tips."
-version: 0.0.2
+description: "Easy to trace and listen error/tips/log."
+version: 0.0.4+2
 homepage: https://github.com/TolyFx/fx
 repository: https://github.com/TolyFx/fx
 

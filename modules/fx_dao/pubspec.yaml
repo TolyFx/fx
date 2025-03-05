@@ -1,11 +1,11 @@
 name: fx_dao
 description: "flutter sqlite dao, easy to use and upgrade database."
-version: 0.0.1+3
+version: 0.0.3+1
 homepage: https://github.com/TolyFx/fx
 repository: https://github.com/TolyFx/fx/tree/main/modules/fx_dao
 
 environment:
-  sdk: '>=3.4.3 <4.0.0'
+  sdk: '>=3.4.0 <4.0.0'
   flutter: ">=1.17.0"
 
 dependencies:

@@ -70,7 +70,12 @@ abstract class Dao<T extends Po> with HasDatabase, DbTable {
     // 创建一个批量操作对象
     Batch batch = database.batch();
     for (T frame in frames) {
-      batch.insert(name, frame.toJson());
+      batch.insert(
+        name,
+        frame.toJson(),
+        nullColumnHack: param.nullColumnHack,
+        conflictAlgorithm: param.conflictAlgorithm,
+      );
     }
     // 执行批量操作
     await batch.commit(noResult: true);
@@ -83,7 +88,12 @@ abstract class Dao<T extends Po> with HasDatabase, DbTable {
     await database.transaction((Transaction txn) async {
       // 批量插入表数据
       for (T frame in frames) {
-        await txn.insert(name, frame.toJson());
+        await txn.insert(
+          name,
+          frame.toJson(),
+          nullColumnHack: param.nullColumnHack,
+          conflictAlgorithm: param.conflictAlgorithm,
+        );
       }
     });
     return true;
