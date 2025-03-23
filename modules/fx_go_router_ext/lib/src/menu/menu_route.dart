@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
-import 'package:tolyui_navigation/tolyui_navigation.dart';
+import 'package:tolyui_meta/tolyui_meta.dart';
 
 typedef L10nParser<T> = String Function(T tr);
 

@@ -1,0 +1,10 @@
+Fx Framework: [github home](https://github.com/TolyFx/fx)
+
+- [fx_boot_starter](https://pub.dev/packages/fx_boot_starter)
+- [fx_dao](https://pub.dev/packages/fx_dao)
+- [fx_dio](https://pub.dev/packages/fx_dio)
+- [fx_env](https://pub.dev/packages/fx_env)
+- [fx_platform_adapter](https://pub.dev/packages/fx_platform_adapter)
+- [fx_string](https://pub.dev/packages/fx_string)
+- [fx_trace](https://pub.dev/packages/fx_trace)
+- [fx_go_router_ext](https://pub.dev/packages/fx_go_router_ext)
