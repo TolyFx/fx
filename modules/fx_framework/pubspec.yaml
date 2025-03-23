@@ -1,0 +1,28 @@
+name: fx_framework
+description: "fx framework for flutter."
+version: 0.0.1
+homepage: https://github.com/TolyFx/fx
+repository: https://github.com/TolyFx/fx/tree/main/modules/fx_framework
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+  flutter: ">=1.17.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  fx_boot_starter: 0.1.1
+  fx_dao: 0.0.3+1
+  fx_dio: 0.0.4+2
+  fx_env: 0.0.1
+  fx_platform_adapter: 0.0.3
+  fx_string: 0.0.1
+  fx_trace: 0.0.5
+  fx_go_router_ext: 0.0.5+1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:

@@ -1,19 +1,5 @@
-extension StringExt on String {
-  String separator({int interval = 3}) {
-    List<String> valueList = [];
-    int current = length;
-    while (current >= interval) {
-      valueList.add(substring(current - interval, current));
-      current -= interval;
-    }
-    if (current != 0) {
-      valueList.add(substring(0, current));
-    }
-    return valueList.reversed.join(",");
-  }
-}
 
-extension RichTextExt on String {
+extension TextChackExt on String {
 
   bool get isMarkdown => checkMarkdown();
 

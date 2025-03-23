@@ -1,6 +1,6 @@
 name: fx_trace
 description: "Easy to trace and listen error/tips/log."
-version: 0.0.4+2
+version: 0.0.5
 homepage: https://github.com/TolyFx/fx
 repository: https://github.com/TolyFx/fx
 
@@ -11,6 +11,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  stream_transform: ^2.1.1
 
 dev_dependencies:
   flutter_test:

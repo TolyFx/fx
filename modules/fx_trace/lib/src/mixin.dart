@@ -1,5 +1,3 @@
-import 'package:fx_trace/src/model/trace/log_trace.dart';
-
 import 'model/model.dart';
 
 typedef ExceptionCallback = void Function(Trace trace);

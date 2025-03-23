@@ -6,8 +6,9 @@ void main() async {
   // String module  = 'fx_env';
   // String module  = 'fx_platform_adapter';
   // String module  = 'fx_string';
-  String module  = 'fx_dio';
+  // String module  = 'fx_trace';
   // String module  = 'fx_go_router_ext';
+  String module  = 'fx_go_router_ext';
   publishModule(module);
 }
 
