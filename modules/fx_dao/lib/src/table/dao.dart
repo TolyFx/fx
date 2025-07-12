@@ -1,14 +1,26 @@
 import 'package:fx_dao/fx_dao.dart';
 
-typedef Convertor<T> = T Function(Map<String, Object?> data);
-typedef ConvertorList<T> = T Function(List<Map<String, Object?>> data);
+typedef Convertor<T> = T Function(dynamic data);
+typedef ConvertorList<T> = T Function(List<dynamic> data);
 
-abstract class Dao<T extends Po> with HasDatabase, DbTable {
-  Future<List<T>> query({QueryArgs args = const QueryArgs()}) async {
-    var (String where, List<Object?>? arguments) = args.parserSql;
-    List<Map<String, Object?>> data =
-        await database.rawQuery('SELECT FROM $name $where', arguments);
+abstract class Dao with HasDatabase, DbTable {}
+
+abstract class ValueDao<T extends Po> extends Dao {
+  Future<List<T>> query([Query? query]) async {
+    query = query ?? Query();
+    query.table = name;
+    var ret = query.toSql();
+    List<Map<String, Object?>> data = await database.rawQuery(
+      ret.sql,
+      ret.args,
+    );
     return data.map<T>(convertor).toList();
+  }
+
+  Future<T> queryOne([Query? query]) async {
+    List<T> ret = await this.query(query);
+    assert(ret.length == 1);
+    return ret.first;
   }
 
   Convertor<T> get convertor;
@@ -56,7 +68,9 @@ abstract class Dao<T extends Po> with HasDatabase, DbTable {
     };
   }
 
-  Future<int> update(String id, T frame);
+  Future<int> update(String id, T frame) async {
+    return 0;
+  }
 
   Future<bool> _insertAll(List<T> frames, CustomInsert param) async {
     for (T frame in frames) {

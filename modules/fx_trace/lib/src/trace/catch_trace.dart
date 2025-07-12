@@ -1,4 +1,5 @@
-import '../model.dart';
+import '../model/model.dart';
+import 'trace.dart';
 
 /// 捕捉到的异常
 class CatchTrace with Code, Trace {

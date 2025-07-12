@@ -5,7 +5,7 @@ import '../../fx_dao.dart';
 abstract class FxDb extends DbStore with DbOpenMixin {
   T call<T extends Dao>() {
     DbTable? table = _tableMap[T];
-    if(table is T) return table as T;
+    if(table is T) return table;
     throw 'FxDb cast Exception::[${table.runtimeType} is not type: $T]';
   }
 

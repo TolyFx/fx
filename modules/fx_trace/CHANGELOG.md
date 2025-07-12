@@ -1,5 +1,7 @@
 ## 0.0.5
-
+* 0.0.5+6: add [Trace#toString]
+* 0.0.5+5: add [TraceStateMixin]/[TraceStateMixin.minLogLevel]
+* 0.0.5+1: add [StackTrace] for default Trace
 * add [FxSingleEventMixin]/[FxEmitter#on]
 
 ## 0.0.4
