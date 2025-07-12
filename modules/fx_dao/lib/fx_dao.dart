@@ -2,6 +2,7 @@ library fx_dao;
 
 export 'src/table/db_table.dart';
 export 'src/table/dao.dart';
+export 'src/tools/tools.dart';
 
 export 'src/model/model.dart';
 

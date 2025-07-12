@@ -65,6 +65,10 @@ mixin DioRequestMixin on TraceMixin implements RequestAble {
             if (paginateData != null) {
               paginate = Paginate.fromMap(paginateData);
             }
+            dynamic total = repData['total'];
+            if (total != null) {
+              paginate = Paginate.fromMap({"total": total});
+            }
           }
           result = ApiOK(ret, paginate: paginate);
         } catch (error, stack) {
