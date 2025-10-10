@@ -1,0 +1,20 @@
+name: fx_cli
+description: A Flutter module generator CLI tool.
+version: 0.0.1
+executables:
+  fx_cli: cli
+
+environment:
+  sdk: ^3.6.1
+
+dependencies:
+  args: ^2.5.0
+  path: ^1.8.0
+  archive: ^3.4.0
+
+dev_dependencies:
+  lints: ^5.0.0
+  test: ^1.24.0
+
+resources:
+  - template.zip

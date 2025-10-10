@@ -10,7 +10,7 @@ void main() async {
   // String module  = 'fx_go_router_ext';
   // String module = 'fx_string';
   // String module = 'fx_dio';
-  String module = 'fx_dao';
+  String module = 'fx_go_router_ext';
   publishModule(module);
 }
 
