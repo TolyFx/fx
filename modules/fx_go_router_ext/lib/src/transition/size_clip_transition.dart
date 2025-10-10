@@ -82,7 +82,6 @@ class CirclePathClipper extends CustomClipper<Path> {
 
   @override
   Path getClip(Size size) {
-    print('progress:$progress');
     if(progress==0){
       return Path();
     }
