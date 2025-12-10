@@ -15,7 +15,7 @@ include: package:lints/recommended.yaml
 
 analyzer:
   exclude:
-    - template_source/**
+    - modules_template/**
 
 # For more information about the core and recommended set of lints, see
 # https://dart.dev/go/core-lints
