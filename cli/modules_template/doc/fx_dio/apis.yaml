@@ -1,0 +1,105 @@
+apis:
+  - desc: '申请租约信息'
+    GET: /uhomes7.86/api/apply/applyTenancy
+    params:
+      house_id: { type: int*, test: 18087, desc: '房源ID' }
+      hcl_id: { type: int?, test: 24434094, desc: '房源清单ID' }
+      unit_id: { type: int?, test: 201266, desc: '单元ID' }
+
+  - desc: '获取申请表单模板'
+    GET: /uhomes7.86/api/apply/applyTemplate
+    decrypt: true
+    params:
+      house_id: { type: int*, test: 18087, desc: '房源ID' }
+      type: { type: int*, test: 1, desc: '模板类型' }
+
+  - desc: '获取取消政策'
+    GET: /uhomes7.86/api/apply/cancelPolicy
+    params:
+      house_id: { type: int*, test: 18087, desc: '房源ID' }
+      is_preview: { type: int, test: 0, desc: '是否预览' }
+
+  - desc: '获取房源报告状态'
+    GET: /uhomes7.86/api/Supplier/reportStatus
+    params:
+      house_id: { type: int, test: 18087, desc: '房源ID' }
+
+  - desc: '检查订单团队信息'
+    GET: /uhomes7.86/api/rent/checkOrderTeam
+    params:
+      house_id: { type: int, test: 18087, desc: '房源ID' }
+
+  - desc: '获取协议内容'
+    GET: /uhomes7.86/api/apply/agreement
+    decrypt: true
+    params:
+      house_id: { type: int, test: 18087, desc: '房源ID' }
+
+  - desc: '添加房源检查日志'
+    POST: /uhomes7.86/api/houseCheckLib/addHclLog
+    params:
+      type: { type: int, test: 3, desc: '日志类型' }
+      hcr_id: { type: int, test: 178116, desc: '房源检查记录ID' }
+      house_id: { type: int, test: 18087, desc: '房源ID' }
+
+  - desc: '申请表搜索学校'
+    POST: /uhomes7.86/api/houseSearchV5/searchSchool
+    params:
+      keyword: { type: String*, test: 'y', desc: '搜索内容' }
+
+  - desc: '检查学校城市是否有效'
+    GET: /uhomes7.86/api/RentV3/checkSchoolCityValid
+    params:
+      school_id: { type: int*, test: 179, desc: '学校ID' }
+      city_id: { type: int*, test: 7, desc: '城市ID' }
+
+  - desc: '获取国家列表'
+    POST: /uhomes7.86/api/region/countries
+
+  - desc: '获取地区列表'
+    POST: /uhomes7.86/api/region/area
+    form:
+      type: { type: int*, test: 1, desc: '类型' }
+      country_id: { type: int*, test: 156, desc: '国家ID' }
+
+  - desc: '获取下级地区'
+    POST: /uhomes7.86/api/region/next_area
+    form:
+      level: { type: int*, test: 2, desc: '层级' }
+      parent_id: { type: int*, test: 5001, desc: '父级ID' }
+
+  - desc: '提交申请表单'
+    POST: /uhomes7.85/api/RentV3/apply
+    test: false
+    form:
+      unit_id: { type: int*, test: 201266, desc: '单元ID' }
+      is_instant_booking: { type: int*, test: 1, desc: '是否闪订' }
+      components: { type: String*, test: '', desc: '表单组件数据' }
+      start_date: { type: String*, test: '2026-09-05', desc: '开始日期' }
+      end_date: { type: String*, test: '2027-08-28', desc: '结束日期' }
+      team_cover_order: { type: int?, test: 1, desc: '团队覆盖订单' }
+      staff_no: { type: String?, test: '11111111111111', desc: '员工编号' }
+      invite_no: { type: String?, test: '1111111111111111222', desc: '邀请码' }
+      hcl_id: { type: int?, test: 24434095, desc: '房源清单ID' }
+
+  - desc: '获取英国卡活动信息'
+    GET: /uhomes7.85/api/activity/ukCard
+    decrypt: true
+    params:
+      house_id: { type: int*, test: 18087, desc: '房源ID' }
+
+
+config:
+  base_url: https://api.uhomes.com
+  headers:
+    X-Uhouzz-Cust-ID: "2501051"
+    X-Request-Timestamp: "{{timestamp}}"
+    x-request-xcode: ""
+    Version: "7.86"
+    X-Client-Appid: "2"
+    X-Client-Signature: "{{signature}}"
+    X-Client-Authorization: "3fbf4542a4f73381463222e0234f735112ca834d"
+    locale: "zh-cn"
+    Content-Type: "application/x-www-form-urlencoded"
+    user-agent: "22041211AC(Android/14) UhomesApp(UhomesCN/7.86.0) Weex/0.28.0.1 1080x2280"
+    Host: "api.uhomes.com"
