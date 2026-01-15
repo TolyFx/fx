@@ -25,7 +25,7 @@ class AppStartBloc<S> extends Cubit<AppStatus> {
       /// 处理初始化异步任务
       data = await repository.initApp();
     } catch (e, s) {
-      emit(AppStartFailed(e, s, FixType.none));
+      emit(AppStartFailed(e, s));
       return;
     }
 

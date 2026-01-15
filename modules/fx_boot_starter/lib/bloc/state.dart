@@ -17,17 +17,9 @@ class AppStartSuccess<S> extends AppStatus {
   const AppStartSuccess(this.data);
 }
 
-enum FixType{
-  none,
-  fixing,
-  fixed,
-  fixError,
-}
-
 class AppStartFailed extends AppStatus {
   final Object error;
   final StackTrace trace;
-  final FixType fix;
 
-  const AppStartFailed(this.error,this.trace, this.fix);
+  const AppStartFailed(this.error, this.trace);
 }

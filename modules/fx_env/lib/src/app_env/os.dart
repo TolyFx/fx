@@ -17,9 +17,9 @@ enum OS {
   macos,
   linux,
   web,
+  ohos,
   unknown,
 }
-
 
 class OSChecker {
   bool isAndroid = false;
@@ -42,7 +42,7 @@ class OSChecker {
     isLinux = !isWeb && os == OS.linux;
 
     isDesktop = !isWeb && (isMacOS || isWindows || isLinux);
-    isMobile =  !isWeb && (isAndroid || isIos);
+    isMobile = !isWeb && (isAndroid || isIos);
     isDesktopUI = isWeb || isDesktop;
   }
 }
