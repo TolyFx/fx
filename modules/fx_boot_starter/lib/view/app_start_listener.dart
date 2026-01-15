@@ -22,12 +22,11 @@ class AppStartListener<S> extends StatelessWidget {
         if (state is AppLoadDone<S>) {
           action.onLoaded(context, state.cost, state.data);
         }
-        if (state is AppStartSuccess) {
-          action.onStartSuccess(context,state.data);
+        if (state is AppStartSuccess<S>) {
+          action.onStartSuccess(context, state.data);
         }
-
         if (state is AppStartFailed) {
-          action.onStartError(context,state.error,state.trace);
+          action.onStartError(context, state.error, state.trace);
         }
       },
     );

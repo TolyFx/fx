@@ -41,7 +41,8 @@ dependencies:
 
   fx_boot_starter:
     path: modules/fx_boot_starter
-
+  fx_dio:
+    path: modules/fx_dio
   fx_platform_adapter:
     path: modules/fx_platform_adapter
   toly_menu: ^0.0.4

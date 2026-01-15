@@ -12,7 +12,6 @@ import 'package:flutter/foundation.dart';
 
 import 'os.dart';
 
-
 class AppEnv {
   late OS _os;
   late OSChecker _checker;
@@ -38,6 +37,8 @@ class AppEnv {
 
   bool get isIos => _checker.isIos;
 
+  bool get isOhos => _os == OS.unknown;
+
   bool get isWindows => _checker.isWindows;
 
   bool get isMacOS => _checker.isMacOS;
@@ -51,5 +52,4 @@ class AppEnv {
   bool get isDesktopUI => _checker.isDesktopUI;
 
   bool get isMobile => _checker.isMobile;
-
 }

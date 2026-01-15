@@ -8,3 +8,4 @@
 
 ## 0.0.3
 * split fx_env -> 0.0.1
+* +1 : fx_env -> 0.0.1+1 support ohos
