@@ -1,3 +1,6 @@
+## 0.0.6
+add [AsyncFxEvent]
+
 ## 0.0.5
 * 0.0.5+6: add [Trace#toString]
 * 0.0.5+5: add [TraceStateMixin]/[TraceStateMixin.minLogLevel]
