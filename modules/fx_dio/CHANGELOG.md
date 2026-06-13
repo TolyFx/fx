@@ -1,16 +1,10 @@
-## 0.0.4
+# Changelog
 
-- 0.0.4+3: paginate
-- 0.0.4+2: port can be null
-- detail error log
+## 0.0.5
 
-## 0.0.3
+0.0.5+0 重构架构，Breaking Changes（RequestHost<E>、HostOptions、fx_exception 依赖）
+0.0.5+2 完善 README
 
-- support other request.
-- support Host do request.
-- support register with response Interceptor
-- support error trace/handler.
+## 0.0.4+4
 
-## 0.0.1
-
-release
+- 初始版本
