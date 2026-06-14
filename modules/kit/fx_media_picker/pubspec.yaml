@@ -1,0 +1,23 @@
+name: fx_media_picker
+description: "Default MediaPicker implementation for fx_media. Wraps platform-specific picker libraries."
+version: 0.0.1
+homepage: https://github.com/TolyFx/fx
+
+environment:
+  sdk: '>=3.4.0 <4.0.0'
+  flutter: ">=1.17.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  fx_media:
+    path: ../../ability/fx_media
+  image_picker: ^1.1.2
+  file_picker: ^8.0.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
