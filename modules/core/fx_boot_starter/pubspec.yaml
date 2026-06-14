@@ -1,0 +1,20 @@
+name: fx_boot_starter
+description: "a app start package to help handle start easy."
+version: 0.2.0
+homepage: https://github.com/TolyFx/fx
+repository: https://github.com/TolyFx/fx/tree/main/modules/fx_boot_starter
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+  flutter: ">=1.17.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+
+flutter:
