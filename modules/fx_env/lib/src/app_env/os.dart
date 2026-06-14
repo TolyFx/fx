@@ -6,10 +6,6 @@
 // CreateTime:  2024-07-13
 // Contact Me:  1981462002@qq.com
 
-import 'dart:io';
-
-import 'package:flutter/foundation.dart';
-
 enum OS {
   android,
   ios,
@@ -41,7 +37,7 @@ class OSChecker {
     isWindows = !isWeb && os == OS.windows;
     isMacOS = !isWeb && os == OS.macos;
     isLinux = !isWeb && os == OS.linux;
-    isOhos = !isWeb && os == OS.unknown;
+    isOhos = !isWeb && os == OS.ohos;
 
     isDesktop = !isWeb && (isMacOS || isWindows || isLinux);
     isMobile = !isWeb && (isAndroid || isIos || isOhos);

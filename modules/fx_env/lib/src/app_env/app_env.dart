@@ -12,6 +12,9 @@ import 'package:flutter/foundation.dart';
 
 import 'os.dart';
 
+/// 编译时平台标识，鸿蒙构建时通过 --dart-define=FX_OS=ohos 注入
+const String _fxOs = String.fromEnvironment('FX_OS');
+
 class AppEnv {
   late OS _os;
   late OSChecker _checker;
@@ -24,6 +27,7 @@ class AppEnv {
   }
 
   OS _initOS() {
+    if (_fxOs == 'ohos') return OS.ohos;
     if (kIsWeb) return OS.web;
     if (Platform.isWindows) return OS.windows;
     if (Platform.isMacOS) return OS.macos;
@@ -37,7 +41,7 @@ class AppEnv {
 
   bool get isIos => _checker.isIos;
 
-  bool get isOhos => _os == OS.unknown;
+  bool get isOhos => _checker.isOhos;
 
   bool get isWindows => _checker.isWindows;
 
