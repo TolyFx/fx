@@ -1,8 +1,7 @@
-name: fx_trace
-description: "Easy to trace and listen error/tips/log."
-version: 0.1.0
+name: fx_event
+description: "Lightweight typed event bus for Flutter. Supports sync/async events and State lifecycle binding."
+version: 0.0.1
 homepage: https://github.com/TolyFx/fx
-repository: https://github.com/TolyFx/fx
 
 environment:
   sdk: '>=3.4.0 <4.0.0'
@@ -11,7 +10,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  fx_exception: ^0.0.1+3
 
 dev_dependencies:
   flutter_test:

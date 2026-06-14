@@ -1,116 +1,64 @@
-import 'dart:async';
-
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fx_trace/fx_trace.dart';
 
-// 测试用异步事件
-class TestAsyncEvent extends AsyncFxEvent<String> {
-  final String input;
-  TestAsyncEvent(this.input);
-}
-
-class TestAsyncIntEvent extends AsyncFxEvent<int> {
-  final int value;
-  TestAsyncIntEvent(this.value);
-}
-
 void main() {
-  group('FxTrace Tests', () {
-    test('should emit and listen to traces', () {
-      final traces = <Trace>[];
-      FxTrace().addTraceListener((trace) => traces.add(trace));
+  group('FxTrace', () {
+    test('emit 和 listener 正常工作', () {
+      final List<Trace> traces = [];
+      FxTrace().addTraceListener((Trace trace) => traces.add(trace));
 
-      final logTrace = LogTrace('test message');
-      logTrace.emit();
+      final LogTrace logTrace = LogTrace('test message');
+      FxTrace().emit(logTrace);
 
       expect(traces.length, 1);
       expect(traces.first.message, 'test message');
     });
 
-    test('should respect log level filtering', () {
+    test('日志级别过滤', () {
       FxTrace.minLogLevel = LogLevel.warning;
-      final traces = <Trace>[];
-      FxTrace().addTraceListener((trace) => traces.add(trace));
+      final List<Trace> traces = [];
+      FxTrace().addTraceListener((Trace trace) => traces.add(trace));
 
-      LogTrace('info', level: LogLevel.info).emit();
-      LogTrace('warning', level: LogLevel.warning).emit();
+      FxTrace().emit(LogTrace('info', level: LogLevel.info));
+      FxTrace().emit(LogTrace('warning', level: LogLevel.warning));
 
       expect(traces.length, 1);
       expect(traces.first.message, 'warning');
     });
   });
 
-  group('AsyncFxEvent Tests', () {
-    late StreamSubscription subscription;
-
-    tearDown(() {
-      subscription.cancel();
-    });
-
-    test('emitAsync should return result when completed', () async {
-      // 模拟处理方
-      subscription = FxEmitter().on<TestAsyncEvent>((event) {
-        // 模拟异步处理
-        Future.delayed(Duration(milliseconds: 50), () {
-          event.complete('Hello ${event.input}');
-        });
-      });
-
-      final event = TestAsyncEvent('World');
-      final result = await event.emitAsync();
-
-      expect(result, 'Hello World');
-    });
-
-    test('emitAsync should handle errors', () async {
-      subscription = FxEmitter().on<TestAsyncEvent>((event) {
-        event.completeError(Exception('Something went wrong'));
-      });
-
-      final event = TestAsyncEvent('test');
-
-      expect(
-        () => event.emitAsync(),
-        throwsA(isA<Exception>()),
+  group('CatchTrace', () {
+    test('捕获异常信息', () {
+      final CatchTrace trace = CatchTrace(
+        const FormatException('bad'),
+        StackTrace.current,
+        msg: 'parse failed',
+        code: 100,
       );
+      expect(trace.message, 'parse failed');
+      expect(trace.code.value, 100);
     });
 
-    test('emitAsync should timeout', () async {
-      // 不调用 complete，让它超时
-      subscription = FxEmitter().on<TestAsyncEvent>((event) {
-        // 故意不处理
-      });
-
-      final event = TestAsyncEvent('test');
-
-      expect(
-        () => event.emitAsync(timeout: Duration(milliseconds: 100)),
-        throwsA(isA<TimeoutException>()),
+    test('msg 为空时回退到 error.toString', () {
+      final CatchTrace trace = CatchTrace(
+        const FormatException('oops'),
+        null,
       );
+      expect(trace.message, contains('FormatException'));
     });
+  });
 
-    test('complete should only work once', () async {
-      subscription = FxEmitter().on<TestAsyncIntEvent>((event) {
-        event.complete(event.value * 2);
-        event.complete(event.value * 3); // 第二次调用应该被忽略
-      });
+  group('TipTrace', () {
+    test('各 level 构造正确', () {
+      final TipTrace info = TipTrace.info('msg', 0);
+      final TipTrace warning = TipTrace.warning('msg', 1);
+      final TipTrace error = TipTrace.error('msg', 2);
+      final TipTrace success = TipTrace.success('msg', 3);
 
-      final event = TestAsyncIntEvent(10);
-      final result = await event.emitAsync();
-
-      expect(result, 20); // 应该是第一次的结果
-      expect(event.isCompleted, true);
-    });
-
-    test('should work with different return types', () async {
-      subscription = FxEmitter().on<TestAsyncIntEvent>((event) {
-        event.complete(event.value + 100);
-      });
-
-      final event = TestAsyncIntEvent(42);
-      final result = await event.emitAsync();
-
-      expect(result, 142);
+      expect(info.level, TipLevel.info);
+      expect(warning.level, TipLevel.warning);
+      expect(error.level, TipLevel.error);
+      expect(success.level, TipLevel.success);
     });
   });
 }

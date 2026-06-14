@@ -1,6 +1,4 @@
-
-import '../model/model.dart';
-import 'trace.dart';
+import 'package:fx_exception/fx_exception.dart';
 
 enum TipLevel {
   info,
@@ -9,23 +7,28 @@ enum TipLevel {
   success,
 }
 
-/// 捕捉到的异常
-class TipTrace with Code, Trace {
+class _SimpleCode with Code {
   @override
-  final int? value;
+  final int code;
+  const _SimpleCode(this.code);
+}
+
+/// 提示追踪
+class TipTrace with Trace {
+  final int _code;
   @override
   final String message;
   final TipLevel level;
 
-  TipTrace(this.message, this.value, {this.level = TipLevel.info});
+  TipTrace(this.message, int code, {this.level = TipLevel.info}) : _code = code;
 
-  TipTrace.info(this.message, this.value) : level = TipLevel.info;
-  TipTrace.warning(this.message, this.value) : level = TipLevel.warning;
-  TipTrace.error(this.message, this.value) : level = TipLevel.error;
-  TipTrace.success(this.message, this.value) : level = TipLevel.success;
+  TipTrace.info(this.message, int code) : _code = code, level = TipLevel.info;
+  TipTrace.warning(this.message, int code) : _code = code, level = TipLevel.warning;
+  TipTrace.error(this.message, int code) : _code = code, level = TipLevel.error;
+  TipTrace.success(this.message, int code) : _code = code, level = TipLevel.success;
 
   @override
-  Code? get code => this;
+  Code get code => _SimpleCode(_code);
 
   @override
   Object? get error => null;
