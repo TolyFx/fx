@@ -1,5 +1,4 @@
-import '../model/model.dart';
-import 'trace.dart';
+import 'package:fx_exception/fx_exception.dart';
 
 enum LogLevel {
   none,
@@ -9,10 +8,15 @@ enum LogLevel {
   error,
 }
 
-/// 日志追踪
-class LogTrace with Code, Trace {
+class _SimpleCode with Code {
   @override
-  final int? value;
+  final int code;
+  const _SimpleCode(this.code);
+}
+
+/// 日志追踪
+class LogTrace with Trace {
+  final int _code;
 
   final bool withStack;
 
@@ -27,20 +31,20 @@ class LogTrace with Code, Trace {
   LogTrace(
     this.message, {
     this.level = LogLevel.info,
-    this.value = 0,
+    int code = 0,
     this.withStack = false,
-  }) : stack = withStack ? StackTrace.current : null;
+  })  : _code = code,
+        stack = withStack ? StackTrace.current : null;
 
   @override
-  Code? get code => this;
+  Code get code => _SimpleCode(_code);
 
   @override
   Object? get error => null;
 
-  @override
   String? get logString {
-    String msg = "$runtimeType >> $message\n";
-    String error = "Error#[${code?.value}]::${stack}";
-    return "$msg$error";
+    String msg = '$runtimeType >> $message\n';
+    String err = 'Error#[$_code]::$stack';
+    return '$msg$err';
   }
 }

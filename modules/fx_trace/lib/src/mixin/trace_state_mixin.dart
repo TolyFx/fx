@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:fx_exception/fx_exception.dart';
 
-import '../../fx_trace.dart';
+import '../mixin.dart';
 
 mixin TraceStateMixin<T extends StatefulWidget> on State<T> {
   @override

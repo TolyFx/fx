@@ -15,6 +15,8 @@ void kDefaultErrorHandler(Trace trace) {
 mixin TraceMixin {
   final List<ExceptionCallback> _actions = [];
 
+  List<ExceptionCallback> get actions => _actions;
+
   void addTraceListener(ExceptionCallback listener) {
     _actions.add(listener);
   }

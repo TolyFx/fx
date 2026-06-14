@@ -1,7 +1,8 @@
-import 'model/model.dart';
-import 'trace/trace.dart';
+import 'package:fx_exception/fx_exception.dart';
 
-typedef ExceptionCallback = void Function(Trace trace);
+import 'trace/log_trace.dart';
+
+export 'package:fx_exception/fx_exception.dart' show TraceMixin, ExceptionCallback;
 
 class FxTrace with TraceMixin {
   FxTrace._();
@@ -18,33 +19,18 @@ class FxTrace with TraceMixin {
   void emit(Trace trace) {
     notifyTrace(trace);
   }
-}
 
-mixin TraceMixin {
-  final List<ExceptionCallback> _actions = [];
-
-  void addTraceListener(ExceptionCallback listener) {
-    _actions.add(listener);
-  }
-
-  void removeTraceListener(ExceptionCallback listener) {
-    _actions.remove(listener);
-  }
-
-  void dispose() {
-    _actions.clear();
-  }
-
+  @override
   void notifyTrace(Trace trace) {
     if (trace is LogTrace) {
       bool isLowLevel = trace.level.index < FxTrace.minLogLevel.index;
       if (isLowLevel) return;
     }
 
-    for (ExceptionCallback action in _actions) {
+    for (ExceptionCallback action in actions) {
       try {
         action(trace);
-      } catch (e) {
+      } catch (_) {
         // 防止单个监听器异常影响其他监听器
       }
     }

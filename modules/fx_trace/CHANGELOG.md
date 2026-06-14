@@ -1,3 +1,13 @@
+## 0.1.0
+
+- Breaking: 统一 Trace/Code/TraceMixin 为 fx_exception 协议，删除自身重复定义
+- Breaking: 事件总线拆分为独立包 fx_event
+- Changed: 移除 stream_transform 依赖
+- Changed: 移除 HttpCode（不属于追踪职责）
+- Added: TraceEmitExt 扩展，任何 Trace 可 `.emit()`
+- Added: AI Skill (fx-trace-usage)
+- Added: README 完整使用文档
+
 ## 0.0.6
 add [AsyncFxEvent]
 
