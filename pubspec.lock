@@ -13,10 +13,10 @@ packages:
     dependency: transitive
     description:
       name: async
-      sha256: e2eb0491ba5ddb6177742d2da23904574082139b07c1e33b8503b9f46f3e1a37
+      sha256: "947bfcf187f74dbc5e146c9eb9c0f10c9f8b30743e341481c1e2ed3ecc18c20c"
       url: "https://pub.dev"
     source: hosted
-    version: "2.13.1"
+    version: "2.11.0"
   bloc:
     dependency: transitive
     description:
@@ -29,10 +29,10 @@ packages:
     dependency: transitive
     description:
       name: boolean_selector
-      sha256: "8aab1771e1243a5063b8b0ff68042d67334e3feab9e95b9490f9a6ebf73b42ea"
+      sha256: "6cfb5af12253eaf2b368f07bacc5a80d1301a071c73360d746b7f2e32d762c66"
       url: "https://pub.dev"
     source: hosted
-    version: "2.1.2"
+    version: "2.1.1"
   characters:
     dependency: transitive
     description:
@@ -61,10 +61,10 @@ packages:
     dependency: "direct main"
     description:
       name: cupertino_icons
-      sha256: "41e005c33bd814be4d3096aff55b1908d419fde52ca656c8c47719ec745873cd"
+      sha256: ba631d1c7f7bef6b729a622b7b752645a2d076dba9976925b8f25725a30e1ee6
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.9"
+    version: "1.0.8"
   dio:
     dependency: transitive
     description:
@@ -127,10 +127,10 @@ packages:
     dependency: "direct main"
     description:
       name: flutter_svg
-      sha256: "35882981abcbfb8c15b286f0cd690ff25bac12d95eff3e25ee207f37d4c42e7f"
+      sha256: cd57f7969b4679317c17af6fd16ee233c1e60a82ed209d8a475c54fd6fd6f845
       url: "https://pub.dev"
     source: hosted
-    version: "2.3.0"
+    version: "2.2.0"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -144,17 +144,17 @@ packages:
   fx_boot_starter:
     dependency: "direct main"
     description:
-      path: "modules/fx_boot_starter"
+      path: "modules/core/fx_boot_starter"
       relative: true
     source: path
-    version: "0.1.1"
+    version: "0.2.0"
   fx_dio:
     dependency: "direct main"
     description:
-      path: "modules/fx_dio"
+      path: "modules/core/fx_dio"
       relative: true
     source: path
-    version: "0.0.4+4"
+    version: "0.0.5+2"
   fx_env:
     dependency: transitive
     description:
@@ -163,10 +163,18 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.0.1"
+  fx_exception:
+    dependency: transitive
+    description:
+      name: fx_exception
+      sha256: "79f8b4a5634bef322783ca022668ed32f50a56a46a03d8638a589012591d48c3"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.1+3"
   fx_platform_adapter:
     dependency: "direct main"
     description:
-      path: "modules/fx_platform_adapter"
+      path: "modules/kit/fx_platform_adapter"
       relative: true
     source: path
     version: "0.0.3+1"
@@ -206,10 +214,10 @@ packages:
     dependency: transitive
     description:
       name: json_annotation
-      sha256: "2a743920d81b7910627f68ee2c9ac1fc0bfee32b9fc3403587d7c6791ca12f80"
+      sha256: "1ce844379ca14835a50d2f019a3099f419082cfdd231cd86a142af94dd5c6bb1"
       url: "https://pub.dev"
     source: hosted
-    version: "4.12.0"
+    version: "4.9.0"
   leak_tracker:
     dependency: transitive
     description:
@@ -302,10 +310,10 @@ packages:
     dependency: transitive
     description:
       name: petitparser
-      sha256: "91bd59303e9f769f108f8df05e371341b15d59e995e6806aefab827b58336675"
+      sha256: c15605cd28af66339f8eb6fbe0e541bfe2d1b72d5825efc6598f3e0a31b9ad27
       url: "https://pub.dev"
     source: hosted
-    version: "7.0.2"
+    version: "6.0.2"
   plugin_platform_interface:
     dependency: transitive
     description:
@@ -371,10 +379,10 @@ packages:
     dependency: transitive
     description:
       name: source_span
-      sha256: "56a02f1f4cd1a2d96303c0144c93bd6d909eea6bee6bf5a0e0b685edbd4c47ab"
+      sha256: "53e943d4206a5e30df338fd4c6e7a077e02254531b138a15aec3bd143c1a8b3c"
       url: "https://pub.dev"
     source: hosted
-    version: "1.10.2"
+    version: "1.10.0"
   stack_trace:
     dependency: transitive
     description:
@@ -395,18 +403,18 @@ packages:
     dependency: transitive
     description:
       name: string_scanner
-      sha256: "921cd31725b72fe181906c6a94d987c78e3b98c2e205b397ea399d4054872b43"
+      sha256: "688af5ed3402a4bde5b3a6c15fd768dbf2621a614950b17f04626c431ab3c4c3"
       url: "https://pub.dev"
     source: hosted
-    version: "1.4.1"
+    version: "1.3.0"
   term_glyph:
     dependency: transitive
     description:
       name: term_glyph
-      sha256: "7f554798625ea768a7518313e58f83891c7f5024f88e46e7182a4558850a4b8e"
+      sha256: a29248a84fbb7c79282b40b8c72a1209db169a2e0542bce341da992fe1bc7e84
       url: "https://pub.dev"
     source: hosted
-    version: "1.2.2"
+    version: "1.2.1"
   test_api:
     dependency: transitive
     description:
@@ -443,10 +451,10 @@ packages:
     dependency: transitive
     description:
       name: vector_graphics
-      sha256: "2306c03da2ba81724afeb589c351ebbc0aa7d86005925be8f8735856dbe5e42d"
+      sha256: a4f059dc26fc8295b5921376600a194c4ec7d55e72f2fe4c7d2831e103d461e6
       url: "https://pub.dev"
     source: hosted
-    version: "1.2.2"
+    version: "1.1.19"
   vector_graphics_codec:
     dependency: transitive
     description:
@@ -459,10 +467,10 @@ packages:
     dependency: transitive
     description:
       name: vector_graphics_compiler
-      sha256: "7ee12e6dffe0fc8e755179d6d91b3b34f5924223fc104d85572ef9180d73d172"
+      sha256: ca81fdfaf62a5ab45d7296614aea108d2c7d0efca8393e96174bf4d51e6725b0
       url: "https://pub.dev"
     source: hosted
-    version: "1.2.5"
+    version: "1.1.18"
   vector_math:
     dependency: transitive
     description:
@@ -475,10 +483,10 @@ packages:
     dependency: transitive
     description:
       name: vm_service
-      sha256: "0016aef94fc66495ac78af5859181e3f3bf2026bd8eecc72b9565601e19ab360"
+      sha256: f6be3ed8bd01289b34d679c2b62226f63c0e69f9fd2e50a6b3c1c729a961041b
       url: "https://pub.dev"
     source: hosted
-    version: "15.2.0"
+    version: "14.3.0"
   web:
     dependency: transitive
     description:
@@ -499,10 +507,10 @@ packages:
     dependency: transitive
     description:
       name: xml
-      sha256: "67f0aff7be013d107995e9b75bf4e7f2c3ef2dfdb2c8e68024bba0a7fd5756a4"
+      sha256: b015a8ad1c488f66851d762d3090a21c600e479dc75e68328c52774040cf9226
       url: "https://pub.dev"
     source: hosted
-    version: "7.0.1"
+    version: "6.5.0"
   yaml:
     dependency: "direct main"
     description:
@@ -512,5 +520,5 @@ packages:
     source: hosted
     version: "3.1.3"
 sdks:
-  dart: ">=3.11.0 <4.0.0"
-  flutter: ">=3.35.0"
+  dart: ">=3.10.0-0 <4.0.0"
+  flutter: ">=3.27.0"
