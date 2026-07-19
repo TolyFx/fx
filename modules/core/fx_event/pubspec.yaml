@@ -1,0 +1,19 @@
+name: fx_event
+description: "Lightweight typed event bus for Flutter. Supports sync/async events and State lifecycle binding."
+version: 0.0.1
+homepage: https://github.com/TolyFx/fx
+
+environment:
+  sdk: '>=3.4.0 <4.0.0'
+  flutter: ">=1.17.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
