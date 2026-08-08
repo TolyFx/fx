@@ -11,6 +11,7 @@ import '../core/model/api_ret.dart';
 import '../core/model/convertor.dart';
 import '../core/model/paginate.dart';
 import 'host/host_options.dart';
+import 'host/host.dart' show RequestHost;
 import 'interceptor/auth_interceptor.dart';
 import 'interceptor/log_interceptor.dart';
 
@@ -57,8 +58,8 @@ class FxDio with TraceMixin {
   }
 
   /// 按类型查找已注册的 Host
-  Host call<T extends Host>() {
-    Host? host;
+  RequestHost call<T extends RequestHost>() {
+    RequestHost? host;
     for (Host key in _hostMap.keys) {
       if (key is T) {
         host = key;
@@ -106,7 +107,8 @@ class FxDio with TraceMixin {
     Duration? receiveTimeout,
     Duration? sendTimeout,
   }) {
-    Host host = this<T>();
+    final host = _findHost<T>();
+    if (host == null) return;
     Dio? dio = _hostMap[host]?.dio;
     if (dio != null) {
       if (connectTimeout != null) dio.options.connectTimeout = connectTimeout;
@@ -117,7 +119,8 @@ class FxDio with TraceMixin {
 
   /// 动态开启/关闭指定 Host 的日志
   void setLog<T extends Host>(bool enable) {
-    Host host = this<T>();
+    final host = _findHost<T>();
+    if (host == null) return;
     _HostEntry? entry = _hostMap[host];
     if (entry == null) return;
     if (enable && !entry.enableLog) {
@@ -126,6 +129,13 @@ class FxDio with TraceMixin {
       entry.dio.interceptors.removeWhere((e) => e is HttpLogInterceptor);
     }
     entry.enableLog = enable;
+  }
+
+  Host? _findHost<T extends Host>() {
+    for (final host in _hostMap.keys) {
+      if (host is T) return host;
+    }
+    return null;
   }
 
   // ==================== 请求 ====================
