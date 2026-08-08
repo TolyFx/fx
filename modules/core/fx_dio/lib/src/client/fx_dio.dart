@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 
 import 'package:fx_exception/fx_exception.dart';
 
@@ -12,6 +13,14 @@ import '../core/model/paginate.dart';
 import 'host/host_options.dart';
 import 'interceptor/auth_interceptor.dart';
 import 'interceptor/log_interceptor.dart';
+
+/// 网络模块默认的调试异常日志；正式环境不会执行 assert 回调。
+void _defaultTraceHandler(Trace trace) {
+  assert(() {
+    debugPrint('FxDio::${trace.code}::${trace.message}');
+    return true;
+  }());
+}
 
 class _HostEntry {
   final Dio dio;
@@ -26,7 +35,7 @@ class _HostEntry {
 
 class FxDio with TraceMixin {
   FxDio._() {
-    addTraceListener(kDefaultErrorHandler);
+    addTraceListener(_defaultTraceHandler);
   }
 
   factory FxDio() {
@@ -66,7 +75,8 @@ class FxDio with TraceMixin {
 
   /// 注册 Host
   void register(Host host, {HostOptions options = const HostOptions()}) {
-    assert(!_hostMap.containsKey(host), '${host.runtimeType} already registered');
+    assert(
+        !_hostMap.containsKey(host), '${host.runtimeType} already registered');
     _accept(host, options: options);
   }
 

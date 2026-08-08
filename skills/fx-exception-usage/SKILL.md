@@ -66,7 +66,6 @@ fx_exception: 0.0.1+2
 |------|------|
 | `RequestErrorCode` | 框架级错误码：convert(0)、emptyData(1)、exception(2) |
 | `RequestException` | 框架级请求异常，fx_dio 内部使用 |
-| `kDefaultErrorHandler` | 默认 debug 日志输出（debugPrint） |
 | `ExceptionCallback` | `void Function(Trace trace)` 类型别名 |
 
 ---
@@ -77,6 +76,7 @@ fx_exception: 0.0.1+2
 - 用户通过 enum + class 自由扩展，编译期类型安全
 - TraceMixin 可被任意类混入，不限于网络层
 - 所有自定义异常自动兼容 TraceMixin 分发链路
+- 日志、上报等宿主策略由使用模块注册监听器实现，不属于协议层
 
 ---
 

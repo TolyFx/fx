@@ -1,4 +1,4 @@
-import 'package:flutter_test/flutter_test.dart';
+import 'package:test/test.dart';
 import 'package:fx_exception/fx_exception.dart';
 
 /// 验证用户自定义 Code mixin 能正常参与 Trace 体系

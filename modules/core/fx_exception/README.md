@@ -1,6 +1,6 @@
 # fx_exception
 
-Fx 家族统一异常追踪机制。提供 `Code`、`Trace`、`TraceMixin` 三个核心协议，各模块基于此扩展自己的异常体系。
+Fx 家族统一异常追踪机制。提供 `Code`、`Trace`、`FxException`、`TraceMixin` 四个核心能力，各模块基于此扩展自己的异常体系。
 
 ## 核心概念
 
@@ -8,6 +8,7 @@ Fx 家族统一异常追踪机制。提供 `Code`、`Trace`、`TraceMixin` 三�
 |------|------|
 | `Code` | 错误码 mixin，任何 enum 通过 `with Code` 接入 |
 | `Trace` | 异常信息 mixin，统一结构：code + message + error + stack |
+| `FxException<C>` | 模块异常通用基类，避免重复声明 Trace 字段 |
 | `TraceMixin` | 异常分发 mixin，支持多监听器 |
 
 ## 使用
@@ -32,17 +33,13 @@ enum BizCode with Code {
 ### 自定义异常
 
 ```dart
-class BizException with Trace implements Exception {
-  @override
-  final BizCode code;
-  @override
-  final String? message;
-  @override
-  final Object? error;
-  @override
-  final StackTrace? stack;
-
-  BizException(this.code, this.message, [this.error, this.stack]);
+class BizException extends FxException<BizCode> {
+  const BizException(
+    super.code,
+    super.message, [
+    super.error,
+    super.stack,
+  ]);
 }
 ```
 
@@ -67,4 +64,9 @@ service.addTraceListener((trace) {
 
 - `RequestErrorCode` — 框架级错误码（convert / emptyData / exception）
 - `RequestException` — 请求异常，fx_dio 内部使用
-- `kDefaultErrorHandler` — 默认 debug 日志输出
+
+日志、上报和界面提示属于宿主策略，不由本包内置；使用模块可自行注册
+`addTraceListener`。
+
+`TraceMixin` 在分发时会隔离单个监听器的异常；需要记录该异常时，可重写
+`onTraceListenerError`。

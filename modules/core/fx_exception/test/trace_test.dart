@@ -1,4 +1,4 @@
-import 'package:flutter_test/flutter_test.dart';
+import 'package:test/test.dart';
 import 'package:fx_exception/fx_exception.dart';
 
 /// 用户自定义异常
@@ -25,10 +25,33 @@ class BizException with Trace implements Exception {
   BizException(this.code, this.message, [this.error, this.stack]);
 }
 
+/// 验证通用异常基类可被模块直接继承。
+final class TypedBizException extends FxException<BizCode> {
+  const TypedBizException(
+    super.code,
+    super.message, [
+    super.error,
+    super.stack,
+  ]);
+}
+
 void main() {
   group('Trace', () {
+    test('通用异常基类保留模块错误码和根因', () {
+      const FormatException cause = FormatException('格式错误');
+      const TypedBizException exception = TypedBizException(
+        BizCode.serverError,
+        '服务不可用',
+        cause,
+      );
+
+      expect(exception.code, BizCode.serverError);
+      expect(exception.message, '服务不可用');
+      expect(exception.error, cause);
+    });
+
     test('RequestException.toString 包含关键信息', () {
-      final RequestException e =
+      const RequestException e =
           RequestException(RequestErrorCode.emptyData, 'no data');
       final String str = e.toString();
       expect(str, contains('emptyData'));
