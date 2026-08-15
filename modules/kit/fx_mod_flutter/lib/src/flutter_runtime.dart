@@ -3,7 +3,9 @@ import 'package:fx_mod/fx_mod.dart';
 import 'package:go_router/go_router.dart';
 
 import 'flutter_module.dart';
+import 'routing/contribution.dart';
 import 'routing/errors.dart';
+import 'routing/registry.dart';
 
 /// 在 Flutter 应用中聚合模块声明并委托核心生命周期。
 class FxFlutterModRuntime {
@@ -23,12 +25,14 @@ class FxFlutterModRuntime {
   /// 所有模块共同决定的初始地址。
   late final String? _initialLocation;
 
-  FxFlutterModRuntime(
-    Iterable<FxAppModule> modules, {
-    FxModContext? context,
-  }) : core = FxModRuntime(modules, context: context) {
+  /// 按模块依赖顺序聚合的带归属路由贡献。
+  late final List<FxOwnedRouteContribution> _routeContributions;
+
+  FxFlutterModRuntime(Iterable<FxAppModule> modules, {FxModContext? context})
+    : core = FxModRuntime(modules, context: context) {
     _modules = core.modules.cast<FxAppModule>();
     _initialLocation = _resolveInitialLocation();
+    _routeContributions = _collectRouteContributions();
     _routes = _buildRoutes();
   }
 
@@ -47,13 +51,39 @@ class FxFlutterModRuntime {
   /// 唯一模块声明的应用初始地址。
   String? get initialLocation => _initialLocation;
 
+  /// 按模块依赖顺序排列的全部路由贡献。
+  List<FxOwnedRouteContribution> get routeContributions =>
+      List<FxOwnedRouteContribution>.unmodifiable(_routeContributions);
+
   /// 获取指定模块的局部 Navigator Key；无局部路由时返回空。
   GlobalKey<NavigatorState>? navigatorKeyOf(String moduleId) =>
       _routeNavigatorKeys[moduleId];
 
+  /// 获取指定宿主挂载位置中的路由贡献。
+  List<FxOwnedRouteContribution> contributionsAt(FxRouteMount mount) {
+    return List<FxOwnedRouteContribution>.unmodifiable(
+      _routeContributions.where(
+        (FxOwnedRouteContribution item) => item.mount == mount,
+      ),
+    );
+  }
+
+  /// 校验全部路由贡献能否安全装配到宿主声明的挂载位置。
+  void validateRouteContributions(Set<FxRouteMount> registeredMounts) {
+    createRouteRegistry(registeredMounts);
+  }
+
+  /// 校验当前贡献并形成可查询、可描述的只读路由注册表。
+  FxRouteRegistry createRouteRegistry(Set<FxRouteMount> registeredMounts) {
+    return FxRouteRegistry(
+      contributions: _routeContributions,
+      registeredMounts: registeredMounts,
+    );
+  }
+
   /// 按依赖顺序聚合 Delegate，同类型 Delegate 只保留第一个。
   List<LocalizationsDelegate<dynamic>> get localizationsDelegates {
-    final Set<Type> delegateTypes = <Type>{};
+    final Set<Type> delegateTypes = {};
     final List<LocalizationsDelegate<dynamic>> result =
         <LocalizationsDelegate<dynamic>>[];
     for (final FxAppModule module in _modules) {
@@ -67,8 +97,8 @@ class FxFlutterModRuntime {
 
   /// 聚合全部模块的语言区域并集，并保持首次声明顺序。
   List<Locale> get supportedLocales {
-    final Set<Locale> seen = <Locale>{};
-    final List<Locale> result = <Locale>[];
+    final Set<Locale> seen = {};
+    final List<Locale> result = [];
     for (final FxAppModule module in _modules) {
       for (final Locale locale in module.supportedLocales) {
         if (seen.add(locale)) result.add(locale);
@@ -135,11 +165,28 @@ class FxFlutterModRuntime {
     return result;
   }
 
+  /// 按模块依赖顺序收集带归属信息的路由贡献。
+  List<FxOwnedRouteContribution> _collectRouteContributions() {
+    final List<FxOwnedRouteContribution> result = [];
+    for (final FxAppModule module in _modules) {
+      for (final FxRouteContribution contribution
+          in module.routeContributions) {
+        result.add(
+          FxOwnedRouteContribution(
+            moduleId: module.id,
+            contribution: contribution,
+          ),
+        );
+      }
+    }
+    return result;
+  }
+
   /// 聚合根路由，并为每个局部路由模块创建独立 ShellRoute。
   List<RouteBase> _buildRoutes() {
-    final List<RouteBase> result = <RouteBase>[];
-    final Set<String> topPaths = <String>{};
-    final Set<String> routeNames = <String>{};
+    final List<RouteBase> result = [];
+    final Set<String> topPaths = {};
+    final Set<String> routeNames = {};
     for (final FxAppModule module in _modules) {
       final List<RouteBase> rootRoutes = List<RouteBase>.of(module.rootRoutes);
       _validateRoutes(module.id, rootRoutes, topPaths, routeNames);
@@ -148,21 +195,20 @@ class FxFlutterModRuntime {
       final List<RouteBase> localRoutes = List<RouteBase>.of(module.routes);
       if (localRoutes.isEmpty) continue;
       _validateRoutes(module.id, localRoutes, topPaths, routeNames);
-      final GlobalKey<NavigatorState> navigatorKey =
-          GlobalKey<NavigatorState>(debugLabel: 'fx_mod:${module.id}');
+      final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>(
+        debugLabel: 'fx_mod:${module.id}',
+      );
       _routeNavigatorKeys[module.id] = navigatorKey;
-      result.add(ShellRoute(
-        navigatorKey: navigatorKey,
-        observers: List<NavigatorObserver>.of(module.routeObservers),
-        builder: (
-          BuildContext context,
-          GoRouterState state,
-          Widget child,
-        ) {
-          return module.wrapRoutes(context, child);
-        },
-        routes: localRoutes,
-      ));
+      result.add(
+        ShellRoute(
+          navigatorKey: navigatorKey,
+          observers: List<NavigatorObserver>.of(module.routeObservers),
+          builder: (BuildContext context, GoRouterState state, Widget child) {
+            return module.wrapRoutes(context, child);
+          },
+          routes: localRoutes,
+        ),
+      );
     }
     return result;
   }

@@ -1,16 +1,31 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:fx_event/fx_event.dart';
 import 'package:fx_mod_flutter/fx_mod_flutter.dart';
 import 'package:go_router/go_router.dart';
 
 void main() {
-  test('按依赖顺序聚合国际化并去除同类型 Delegate', () {
-    final FxFlutterModRuntime runtime = FxFlutterModRuntime(
-      <FxAppModule>[
-        const _FeatureModule(),
-        const _CoreModule(),
-      ],
+  test('路由规格稳定绑定名称与路径', () {
+    const FxRouteSpec route = FxRouteSpec(
+      name: 'feature.detail',
+      path: '/feature/:id',
     );
+
+    expect(route.name, 'feature.detail');
+    expect(route.path, '/feature/:id');
+    expect(
+      route,
+      const FxRouteSpec(name: 'feature.detail', path: '/feature/:id'),
+    );
+  });
+
+  test('按依赖顺序聚合国际化并去除同类型 Delegate', () {
+    final FxFlutterModRuntime runtime = FxFlutterModRuntime(<FxAppModule>[
+      const _FeatureModule(),
+      const _CoreModule(),
+    ]);
 
     expect(
       runtime.localizationsDelegates.map(
@@ -18,19 +33,18 @@ void main() {
       ),
       <Type>[_CoreDelegate, _FeatureDelegate],
     );
-    expect(
-      runtime.supportedLocales,
-      const <Locale>[Locale('zh'), Locale('en'), Locale('ja')],
-    );
+    expect(runtime.supportedLocales, const <Locale>[
+      Locale('zh'),
+      Locale('en'),
+      Locale('ja'),
+    ]);
   });
 
   testWidgets('依赖模块作用域包裹消费模块作用域', (WidgetTester tester) async {
-    final FxFlutterModRuntime runtime = FxFlutterModRuntime(
-      <FxAppModule>[
-        const _FeatureModule(),
-        const _CoreModule(),
-      ],
-    );
+    final FxFlutterModRuntime runtime = FxFlutterModRuntime(<FxAppModule>[
+      const _FeatureModule(),
+      const _CoreModule(),
+    ]);
 
     await tester.pumpWidget(
       Builder(
@@ -49,9 +63,9 @@ void main() {
   });
 
   test('模块局部路由生成独立 ShellRoute 和 Navigator', () {
-    final FxFlutterModRuntime runtime = FxFlutterModRuntime(
-      <FxAppModule>[const _RoutedModule()],
-    );
+    final FxFlutterModRuntime runtime = FxFlutterModRuntime(<FxAppModule>[
+      const _RoutedModule(),
+    ]);
 
     expect(runtime.initialLocation, '/feature');
     expect(runtime.routes, hasLength(2));
@@ -61,9 +75,9 @@ void main() {
   });
 
   testWidgets('局部导航页面位于模块路由作用域中', (WidgetTester tester) async {
-    final FxFlutterModRuntime runtime = FxFlutterModRuntime(
-      <FxAppModule>[const _RoutedModule()],
-    );
+    final FxFlutterModRuntime runtime = FxFlutterModRuntime(<FxAppModule>[
+      const _RoutedModule(),
+    ]);
     final GoRouter router = runtime.createRouter();
 
     await tester.pumpWidget(MaterialApp.router(routerConfig: router));
@@ -99,9 +113,133 @@ void main() {
         const _ConflictModule('a', '/a', initialLocation: '/a'),
         const _ConflictModule('b', '/b', initialLocation: '/b'),
       ]),
-      throwsA(
-        _flutterModCode(FxModFlutterErrorCode.duplicateInitialLocation),
+      throwsA(_flutterModCode(FxModFlutterErrorCode.duplicateInitialLocation)),
+    );
+  });
+
+  test('按依赖顺序聚合指定挂载点的路由贡献', () {
+    const FxRouteMount featureMount = FxRouteMount('host.feature');
+    final FxFlutterModRuntime runtime = FxFlutterModRuntime(<FxAppModule>[
+      const _ContributingModule(
+        'feature',
+        featureMount,
+        '/feature',
+        dependencies: <String>{'core'},
       ),
+      const _ContributingModule('core', featureMount, '/core'),
+    ]);
+
+    runtime.validateRouteContributions(<FxRouteMount>{featureMount});
+
+    expect(
+      runtime
+          .contributionsAt(featureMount)
+          .map((FxOwnedRouteContribution item) => item.moduleId),
+      <String>['core', 'feature'],
+    );
+  });
+
+  test('路由注册表统一提供挂载查询、静态描述和模块归属', () {
+    const FxRouteMount featureMount = FxRouteMount('host.feature');
+    final FxFlutterModRuntime runtime = FxFlutterModRuntime(<FxAppModule>[
+      const _ContributingModule('core', featureMount, '/core'),
+      const _ContributingModule(
+        'feature',
+        featureMount,
+        '/feature',
+        routeName: 'feature',
+      ),
+    ]);
+
+    final FxRouteRegistry registry = runtime.createRouteRegistry(<FxRouteMount>{
+      featureMount,
+    });
+
+    expect(registry.routesAt(featureMount), hasLength(2));
+    expect(
+      registry.requireTopLevelRoute(featureMount, 'feature').path,
+      '/feature',
+    );
+    expect(registry.descriptors, hasLength(2));
+    expect(registry.descriptors.last.fullPath, '/feature');
+    expect(registry.ownerOf('feature'), 'feature');
+  });
+
+  test('缺少宿主要求的顶层命名路由时返回稳定框架错误', () {
+    const FxRouteMount featureMount = FxRouteMount('host.feature');
+    final FxFlutterModRuntime runtime = FxFlutterModRuntime(<FxAppModule>[
+      const _ContributingModule('feature', featureMount, '/feature'),
+    ]);
+    final FxRouteRegistry registry = runtime.createRouteRegistry(<FxRouteMount>{
+      featureMount,
+    });
+
+    expect(
+      () => registry.requireTopLevelRoute(featureMount, 'missing'),
+      throwsA(_flutterModCode(FxModFlutterErrorCode.missingMountedRoute)),
+    );
+  });
+
+  test('多个 Navigator 的路由事件汇入同一模块感知流', () async {
+    const FxRouteMount featureMount = FxRouteMount('host.feature');
+    final FxFlutterModRuntime runtime = FxFlutterModRuntime(<FxAppModule>[
+      const _ContributingModule(
+        'feature',
+        featureMount,
+        '/feature',
+        routeName: 'feature',
+      ),
+    ]);
+    final FxRouteRegistry registry = runtime.createRouteRegistry(<FxRouteMount>{
+      featureMount,
+    });
+    final FxRouteObserverHub hub = FxRouteObserverHub(registry: registry);
+    final FxEventSource<FxRouteEvent> source = hub;
+    final List<FxRouteEvent> events = [];
+    final StreamSubscription<FxRouteEvent> subscription = source.events.listen(
+      events.add,
+    );
+    final NavigatorObserver root = hub.observer('root');
+    final MaterialPageRoute<void> route = MaterialPageRoute<void>(
+      settings: const RouteSettings(name: 'feature'),
+      builder: _buildEmptyPage,
+    );
+
+    root.didPush(route, null);
+    root.didPop(route, null);
+
+    expect(events.map((FxRouteEvent event) => event.sequence), <int>[1, 2]);
+    expect(events.first.navigatorId, 'root');
+    expect(events.first.ownerModuleId, 'feature');
+    expect(events.first, isA<FxEvent>());
+    expect(events.last.action, FxRouteAction.pop);
+
+    await subscription.cancel();
+    await hub.dispose();
+  });
+
+  test('拒绝未知挂载点、重复完整路径和重复路由名称', () {
+    const FxRouteMount knownMount = FxRouteMount('host.known');
+    const FxRouteMount unknownMount = FxRouteMount('host.unknown');
+    expect(
+      () => FxFlutterModRuntime(<FxAppModule>[
+        const _ContributingModule('feature', unknownMount, '/feature'),
+      ]).validateRouteContributions(<FxRouteMount>{knownMount}),
+      throwsA(_flutterModCode(FxModFlutterErrorCode.unknownRouteMount)),
+    );
+    expect(
+      () => FxFlutterModRuntime(<FxAppModule>[
+        const _ContributingModule('a', knownMount, '/same'),
+        const _ContributingModule('b', knownMount, '/same'),
+      ]).validateRouteContributions(<FxRouteMount>{knownMount}),
+      throwsA(_flutterModCode(FxModFlutterErrorCode.duplicateContributionPath)),
+    );
+    expect(
+      () => FxFlutterModRuntime(<FxAppModule>[
+        const _ContributingModule('a', knownMount, '/a', routeName: 'same'),
+        const _ContributingModule('b', knownMount, '/b', routeName: 'same'),
+      ]).validateRouteContributions(<FxRouteMount>{knownMount}),
+      throwsA(_flutterModCode(FxModFlutterErrorCode.duplicateContributionName)),
     );
   });
 }
@@ -114,6 +252,10 @@ Matcher _flutterModCode(FxModFlutterErrorCode code) {
   );
 }
 
+Widget _buildEmptyPage(BuildContext context) {
+  return const SizedBox.shrink();
+}
+
 class _CoreModule extends FxAppModule {
   const _CoreModule();
 
@@ -122,16 +264,13 @@ class _CoreModule extends FxAppModule {
 
   @override
   Iterable<LocalizationsDelegate<dynamic>> get localizationsDelegates =>
-      const <LocalizationsDelegate<dynamic>>[
-        _CoreDelegate(),
-        _CoreDelegate(),
-      ];
+      const <LocalizationsDelegate<dynamic>>[_CoreDelegate(), _CoreDelegate()];
 
   @override
   Iterable<Locale> get supportedLocales => const <Locale>[
-        Locale('zh'),
-        Locale('en'),
-      ];
+    Locale('zh'),
+    Locale('en'),
+  ];
 
   @override
   Widget wrap(BuildContext context, Widget child) {
@@ -154,9 +293,9 @@ class _FeatureModule extends FxAppModule {
 
   @override
   Iterable<Locale> get supportedLocales => const <Locale>[
-        Locale('en'),
-        Locale('ja'),
-      ];
+    Locale('en'),
+    Locale('ja'),
+  ];
 
   @override
   Widget wrap(BuildContext context, Widget child) {
@@ -201,19 +340,17 @@ class _RoutedModule extends FxAppModule {
 
   @override
   Iterable<RouteBase> get rootRoutes => <RouteBase>[
-        GoRoute(path: '/login', builder: _buildLogin),
-      ];
+    GoRoute(path: '/login', builder: _buildLogin),
+  ];
 
   @override
   Iterable<RouteBase> get routes => <RouteBase>[
-        GoRoute(
-          path: '/feature',
-          builder: _buildFeature,
-          routes: <RouteBase>[
-            GoRoute(path: 'detail', builder: _buildDetail),
-          ],
-        ),
-      ];
+    GoRoute(
+      path: '/feature',
+      builder: _buildFeature,
+      routes: <RouteBase>[GoRoute(path: 'detail', builder: _buildDetail)],
+    ),
+  ];
 
   static Widget _buildLogin(BuildContext context, GoRouterState state) {
     return const Text('login', textDirection: TextDirection.ltr);
@@ -260,8 +397,49 @@ class _ConflictModule extends FxAppModule {
 
   @override
   Iterable<RouteBase> get routes => <RouteBase>[
+    GoRoute(path: routePath, name: routeName, builder: _buildPage),
+  ];
+
+  static Widget _buildPage(BuildContext context, GoRouterState state) {
+    return const SizedBox.shrink();
+  }
+}
+
+class _ContributingModule extends FxAppModule {
+  /// 当前测试模块的稳定标识。
+  @override
+  final String id;
+
+  /// 当前模块贡献的宿主挂载位置。
+  final FxRouteMount mount;
+
+  /// 当前模块贡献的顶层路径。
+  final String routePath;
+
+  /// 当前模块贡献的可选路由名称。
+  final String? routeName;
+
+  /// 当前模块依赖的其他模块标识。
+  @override
+  final Set<String> dependencies;
+
+  const _ContributingModule(
+    this.id,
+    this.mount,
+    this.routePath, {
+    this.routeName,
+    this.dependencies = const <String>{},
+  });
+
+  @override
+  Iterable<FxRouteContribution> get routeContributions => <FxRouteContribution>[
+    FxRouteContribution(
+      mount: mount,
+      routes: <RouteBase>[
         GoRoute(path: routePath, name: routeName, builder: _buildPage),
-      ];
+      ],
+    ),
+  ];
 
   static Widget _buildPage(BuildContext context, GoRouterState state) {
     return const SizedBox.shrink();

@@ -2,6 +2,8 @@ import 'package:flutter/widgets.dart';
 import 'package:fx_mod/fx_mod.dart';
 import 'package:go_router/go_router.dart';
 
+import 'routing/contribution.dart';
+
 /// 可由 Flutter 宿主拼装的模块。
 ///
 /// 每个模块自行声明国际化和 Widget 作用域，宿主无需了解模块内部依赖。
@@ -20,6 +22,12 @@ abstract class FxAppModule extends FxModule {
 
   /// 挂载到当前模块局部 Navigator 的路由。
   Iterable<RouteBase> get routes => const <RouteBase>[];
+
+  /// 按宿主挂载位置声明的路由贡献。
+  ///
+  /// 新应用应优先使用该接口；[rootRoutes] 与 [routes] 仅保留旧版兼容。
+  Iterable<FxRouteContribution> get routeContributions =>
+      const <FxRouteContribution>[];
 
   /// 当前模块建议的应用初始地址，同一应用最多只能有一个模块声明。
   String? get initialLocation => null;

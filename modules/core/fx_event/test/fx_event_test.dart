@@ -9,8 +9,9 @@ void main() {
   group('FxEvent', () {
     test('emit() 通过 FxEmitter 发送', () async {
       String? received;
-      final StreamSubscription<TestEvent> sub =
-          FxEmitter().on<TestEvent>((TestEvent e) => received = e.name);
+      final StreamSubscription<TestEvent> sub = FxEmitter().on<TestEvent>(
+        (TestEvent e) => received = e.name,
+      );
 
       const TestEvent('direct').emit();
       await Future<void>.delayed(Duration.zero);

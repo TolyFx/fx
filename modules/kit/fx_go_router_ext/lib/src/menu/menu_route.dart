@@ -27,26 +27,33 @@ class MenuRoute<T> extends GoRoute {
 }
 
 extension GoRouterMenu on GoRouter {
-  String get path => '/${routerDelegate.currentConfiguration.matches.last.matchedLocation}';
+  String get path =>
+      '/${routerDelegate.currentConfiguration.matches.last.matchedLocation}';
 
   MenuNode menuAt<T>(String path, {T? l10n}) {
     RouteBase? base = find(path, findParent: true);
     if (base == null) return MenuNode.fromMap({'children': []});
     List<Map<String, dynamic>> nodes = [];
-    parserNodes<T>(base, nodes,l10n: l10n);
+    final Map<String, dynamic> root = parserNodes<T>(base, nodes, l10n: l10n);
+    if (root.isNotEmpty) nodes.add(root);
     return MenuNode.fromMap({'children': nodes});
   }
 
-  RouteBase? find(
-    String path, {
-    bool findParent = false,
-  }) {
+  RouteBase? find(String path, {bool findParent = false}) {
     Uri uri = Uri.parse(path);
     int pathLevel = uri.pathSegments.length;
     List<RouteBase> routers = configuration.routes;
 
     for (int i = 0; i < routers.length; i++) {
-      RouteBase? ret = findByPath(null, routers[i], path, 0, pathLevel, '', findParent: findParent);
+      RouteBase? ret = findByPath(
+        null,
+        routers[i],
+        path,
+        0,
+        pathLevel,
+        '',
+        findParent: findParent,
+      );
       if (ret != null) {
         return ret;
       }
@@ -95,11 +102,20 @@ extension GoRouterMenu on GoRouter {
   MenuNode singleMenu<T>({T? l10n}) {
     List<RouteBase> routers = configuration.routes;
     List<Map<String, dynamic>> nodes = [];
-    parserNodes<T>(routers.first, nodes,l10n: l10n);
+    final Map<String, dynamic> root = parserNodes<T>(
+      routers.first,
+      nodes,
+      l10n: l10n,
+    );
+    if (root.isNotEmpty) nodes.add(root);
     return MenuNode.fromMap({'children': nodes});
   }
 
-  Map<String, dynamic> parserNodes<T>(RouteBase target, List<Map<String, dynamic>> map, {T? l10n}) {
+  Map<String, dynamic> parserNodes<T>(
+    RouteBase target,
+    List<Map<String, dynamic>> map, {
+    T? l10n,
+  }) {
     Map<String, dynamic> ret = {};
     if (target is MenuRoute) {
       ret['path'] = '/${target.path}';
@@ -107,22 +123,22 @@ extension GoRouterMenu on GoRouter {
       String label;
       if (target is MenuRoute<T> && target.labelL10n != null && l10n != null) {
         label = target.labelL10n!(l10n);
-      }else{
-        label = target.label??'--';
+      } else {
+        label = target.label ?? '--';
       }
       ret['label'] = label;
       ret['icon'] = target.icon;
       if (target.routes.isNotEmpty) {
         List<Map<String, dynamic>> children = [];
         for (int i = 0; i < target.routes.length; i++) {
-          children.add(parserNodes<T>(target.routes[i], [],l10n: l10n));
+          children.add(parserNodes<T>(target.routes[i], [], l10n: l10n));
         }
         ret['children'] = children;
       }
     } else {
       List<RouteBase> routers = target.routes;
       for (int i = 0; i < routers.length; i++) {
-        ret = parserNodes<T>(routers[i], map,l10n: l10n);
+        ret = parserNodes<T>(routers[i], map, l10n: l10n);
         if (ret.isNotEmpty) {
           map.add(ret);
         }

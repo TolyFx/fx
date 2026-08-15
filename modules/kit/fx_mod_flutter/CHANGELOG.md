@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- 新增 `FxRouteSpec`，统一表达宿主可寻址页面的稳定名称与声明路径。
+
 ## 0.1.0
 
 - 支持 Flutter 模块自行声明国际化 Delegate 和支持语言。

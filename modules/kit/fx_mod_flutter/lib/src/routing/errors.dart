@@ -13,7 +13,21 @@ enum FxModFlutterErrorCode with Code {
 
   /// 顶层模块路由没有使用绝对路径。
   invalidTopRoutePath(4),
-  ;
+
+  /// 模块把路由贡献到了宿主未注册的挂载位置。
+  unknownRouteMount(5),
+
+  /// 多个模块路由声明了相同的完整路径。
+  duplicateContributionPath(6),
+
+  /// 多个模块贡献声明了相同的路由名称。
+  duplicateContributionName(7),
+
+  /// 模块路由贡献缺少有效挂载点或路由。
+  invalidRouteContribution(8),
+
+  /// 宿主要求的顶层命名路由未出现在指定挂载点。
+  missingMountedRoute(9);
 
   /// 错误码的持久化数值。
   @override
