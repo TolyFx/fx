@@ -17,6 +17,40 @@ void main() {
   });
 
   group('请求成功', () {
+    test('未提供 convertor 时默认透传响应', () async {
+      dioAdapter.onGet(
+        '/raw',
+        (server) => server.reply(200, {'value': 7}),
+      );
+
+      final ApiRet<Map<String, dynamic>> result = await host.get('/raw');
+
+      expect(result.success, isTrue);
+      expect(result.data, {'value': 7});
+    });
+
+    test('void 请求未提供 convertor 时忽略响应内容', () async {
+      dioAdapter.onPost(
+        '/action',
+        (server) => server.reply(200, {'status': true}),
+      );
+
+      final ApiRet<void> result = await host.post<void>('/action');
+
+      expect(result.success, isTrue);
+    });
+
+    test('void 请求允许空响应体', () async {
+      dioAdapter.onDelete(
+        '/resource',
+        (server) => server.reply(204, null),
+      );
+
+      final ApiRet<void> result = await host.delete<void>('/resource');
+
+      expect(result.success, isTrue);
+    });
+
     test('GET 请求 - 正常解析数据', () async {
       dioAdapter.onGet(
         '/users',
@@ -103,7 +137,27 @@ void main() {
       );
 
       expect(result.failed, isTrue);
-      expect(result.msg, 'convert exception');
+      expect(result.msg, startsWith('convert exception: HTTP 200'));
+      expect(result.msg, contains('bad format'));
+    });
+
+    test('错误响应保留 HTTP 状态和服务端业务码', () async {
+      dioAdapter.onPost(
+        '/auth/code',
+        (server) => server.reply(429, {
+          'code': 'AUTH_CODE_RATE_LIMITED',
+          'message': '请求过于频繁',
+        }),
+      );
+
+      final ApiRet<String> result = await host.post<String>(
+        '/auth/code',
+        convertor: (dynamic data) => data as String,
+      );
+      final RequestException exception = result.trace! as RequestException;
+
+      expect(exception.httpStatus, 429);
+      expect(exception.serverCode, 'AUTH_CODE_RATE_LIMITED');
     });
 
     test('网络异常 - exception', () async {

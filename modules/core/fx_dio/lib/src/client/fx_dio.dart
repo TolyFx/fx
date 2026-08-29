@@ -149,7 +149,7 @@ class FxDio with TraceMixin {
   Future<ApiRet<T>> request<T>(
     Host host,
     String path, {
-    required DataConvertor<T> convertor,
+    DataConvertor<T>? convertor,
     DecryptConvertor? decryptConvertor,
     Object? data,
     Map<String, dynamic>? queryParameters,
@@ -173,20 +173,34 @@ class FxDio with TraceMixin {
       dynamic repData = rep.data;
       if (repData != null) {
         try {
-          result = _convertBody<T>(host, repData, convertor, decryptConvertor);
+          result = _convertBody<T>(
+            host,
+            repData,
+            convertor ?? defaultDataConvertor<T>,
+            decryptConvertor,
+          );
         } catch (error, stack) {
+          final ({
+            int? httpStatus,
+            String message,
+            String? serverCode
+          }) context = _conversionFailureContext(rep, repData, error);
           result = ApiFail(
             trace: RequestException(
               RequestErrorCode.convert,
-              'convert exception',
+              context.message,
               error,
               stack,
+              context.httpStatus,
+              context.serverCode,
             ),
           );
         }
+      } else if (isVoidDataType<T>()) {
+        result = ApiOK<T>((convertor ?? defaultDataConvertor<T>)(null));
       } else {
         result = ApiFail(
-          trace: RequestException(
+          trace: const RequestException(
               RequestErrorCode.emptyData, 'request empty data'),
         );
       }
@@ -208,6 +222,39 @@ class FxDio with TraceMixin {
   }
 
   // ==================== 内部 ====================
+
+  /// 生成可诊断但不泄漏完整响应数据的转换异常说明。
+  ({int? httpStatus, String message, String? serverCode})
+      _conversionFailureContext(
+    Response<dynamic> response,
+    dynamic body,
+    Object error,
+  ) {
+    final int? statusCode = response.statusCode;
+    String? serverMessage;
+    String? businessCode;
+    String? requestId;
+    if (body is Map) {
+      final dynamic message = body['msg'] ?? body['message'] ?? body['error'];
+      if (message != null) serverMessage = message.toString();
+      final dynamic code = body['code'];
+      if (code != null) businessCode = code.toString();
+      final dynamic id = body['request_id'];
+      if (id != null) requestId = id.toString();
+    }
+    final List<String> details = [
+      if (statusCode != null) 'HTTP $statusCode',
+      if (businessCode != null) 'code=$businessCode',
+      if (serverMessage != null && serverMessage.isNotEmpty) serverMessage,
+      if (requestId != null && requestId.isNotEmpty) 'request_id=$requestId',
+      'converter=$error',
+    ];
+    return (
+      httpStatus: statusCode,
+      message: 'convert exception: ${details.join(', ')}',
+      serverCode: businessCode,
+    );
+  }
 
   ApiOK<T> _convertBody<T>(
     Host host,

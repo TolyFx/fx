@@ -3,12 +3,20 @@ import '../exception/fx_exception.dart';
 
 /// 请求模块的统一异常。
 class RequestException extends FxException<RequestErrorCode> {
+  /// 服务端返回的 HTTP 状态码。
+  final int? httpStatus;
+
+  /// 服务端返回的稳定业务错误码。
+  final String? serverCode;
+
   /// 创建请求模块异常。
   const RequestException(
     super.code,
     super.message, [
     super.error,
     super.stack,
+    this.httpStatus,
+    this.serverCode,
   ]);
 
   @override
@@ -19,8 +27,7 @@ class RequestException extends FxException<RequestErrorCode> {
 enum RequestErrorCode with Code {
   convert(0),
   emptyData(1),
-  exception(2),
-  ;
+  exception(2);
 
   @override
   final int code;

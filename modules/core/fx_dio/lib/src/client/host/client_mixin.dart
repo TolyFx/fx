@@ -11,7 +11,7 @@ mixin ClientMixin<H extends Host> {
 
   Future<ApiRet<T>> post<T>(
     String path, {
-    required DataConvertor<T> convertor,
+    DataConvertor<T>? convertor,
     DecryptConvertor? decryptConvertor,
     Object? data,
     Map<String, dynamic>? queryParameters,
@@ -24,7 +24,7 @@ mixin ClientMixin<H extends Host> {
       host,
       path,
       data: data,
-      convertor: convertor,
+      convertor: convertor ?? defaultDataConvertor<T>,
       decryptConvertor: decryptConvertor,
       options: FxDio.checkOptions('POST', options),
       queryParameters: queryParameters,
@@ -36,7 +36,7 @@ mixin ClientMixin<H extends Host> {
 
   Future<ApiRet<T>> get<T>(
     String path, {
-    required DataConvertor<T> convertor,
+    DataConvertor<T>? convertor,
     DecryptConvertor? decryptConvertor,
     Object? data,
     Map<String, dynamic>? queryParameters,
@@ -52,14 +52,14 @@ mixin ClientMixin<H extends Host> {
       options: FxDio.checkOptions('GET', options),
       onReceiveProgress: onReceiveProgress,
       cancelToken: cancelToken,
-      convertor: convertor,
+      convertor: convertor ?? defaultDataConvertor<T>,
       decryptConvertor: decryptConvertor,
     );
   }
 
   Future<ApiRet<T>> put<T>(
     String path, {
-    required DataConvertor<T> convertor,
+    DataConvertor<T>? convertor,
     DecryptConvertor? decryptConvertor,
     Object? data,
     Map<String, dynamic>? queryParameters,
@@ -77,14 +77,14 @@ mixin ClientMixin<H extends Host> {
       onReceiveProgress: onReceiveProgress,
       onSendProgress: onSendProgress,
       cancelToken: cancelToken,
-      convertor: convertor,
+      convertor: convertor ?? defaultDataConvertor<T>,
       decryptConvertor: decryptConvertor,
     );
   }
 
   Future<ApiRet<T>> patch<T>(
     String path, {
-    required DataConvertor<T> convertor,
+    DataConvertor<T>? convertor,
     DecryptConvertor? decryptConvertor,
     Object? data,
     Map<String, dynamic>? queryParameters,
@@ -102,14 +102,14 @@ mixin ClientMixin<H extends Host> {
       onReceiveProgress: onReceiveProgress,
       onSendProgress: onSendProgress,
       cancelToken: cancelToken,
-      convertor: convertor,
+      convertor: convertor ?? defaultDataConvertor<T>,
       decryptConvertor: decryptConvertor,
     );
   }
 
   Future<ApiRet<T>> delete<T>(
     String path, {
-    required DataConvertor<T> convertor,
+    DataConvertor<T>? convertor,
     DecryptConvertor? decryptConvertor,
     Object? data,
     Map<String, dynamic>? queryParameters,
@@ -123,14 +123,14 @@ mixin ClientMixin<H extends Host> {
       queryParameters: queryParameters,
       options: FxDio.checkOptions('DELETE', options),
       cancelToken: cancelToken,
-      convertor: convertor,
+      convertor: convertor ?? defaultDataConvertor<T>,
       decryptConvertor: decryptConvertor,
     );
   }
 
   Future<ApiRet<T>> head<T>(
     String path, {
-    required DataConvertor<T> convertor,
+    DataConvertor<T>? convertor,
     DecryptConvertor? decryptConvertor,
     Object? data,
     Map<String, dynamic>? queryParameters,
@@ -144,7 +144,7 @@ mixin ClientMixin<H extends Host> {
       queryParameters: queryParameters,
       options: FxDio.checkOptions('HEAD', options),
       cancelToken: cancelToken,
-      convertor: convertor,
+      convertor: convertor ?? defaultDataConvertor<T>,
       decryptConvertor: decryptConvertor,
     );
   }
