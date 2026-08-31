@@ -11,7 +11,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  fx_event: ^0.0.1
+  fx_event:
+    path: ../../core/fx_event
   fx_exception: ^0.0.1+4
   fx_mod:
     path: ../../core/fx_mod
