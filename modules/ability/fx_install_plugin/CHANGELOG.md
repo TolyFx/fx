@@ -1,3 +1,7 @@
+## 2.1.2
+
+* Fix the generated Swift bridging header import after aligning the iOS pod name with the Flutter package name.
+
 ## 2.1.1
 
 * Fix the iOS podspec filename and name to match the Flutter package name.
