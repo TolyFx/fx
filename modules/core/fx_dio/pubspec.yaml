@@ -19,10 +19,6 @@ dev_dependencies:
   flutter_lints: ^3.0.0
   http_mock_adapter: ^0.6.1
 
-dependency_overrides:
-  fx_exception:
-    path: ../fx_exception
-
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 

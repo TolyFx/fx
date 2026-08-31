@@ -13,20 +13,13 @@ dependencies:
     sdk: flutter
   fx_event: ^0.0.1
   fx_exception: ^0.0.1+4
-  fx_mod: ^0.1.0
+  fx_mod:
+    path: ../../core/fx_mod
   go_router: 17.5.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^5.0.0
-
-dependency_overrides:
-  fx_event:
-    path: ../../core/fx_event
-  fx_exception:
-    path: ../../core/fx_exception
-  fx_mod:
-    path: ../../core/fx_mod
 
 flutter:
