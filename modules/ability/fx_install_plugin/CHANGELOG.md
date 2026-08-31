@@ -1,3 +1,7 @@
+## 2.1.1
+
+* Fix the iOS podspec filename and name to match the Flutter package name.
+
 ## 2.1.0
 
 * Support low version Android installation (tested 5, 6, 7, 8, 9, 10, 11, 12, 13, the version lower than 5 has not been tested, if there is any problem, please report to me)
