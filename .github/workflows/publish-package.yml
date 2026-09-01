@@ -24,6 +24,9 @@ jobs:
 
       - name: Set up Flutter
         uses: flutter-actions/setup-flutter@6e2468fd827c4a7337cd4b835a6049b78bc0bd1f
+        with:
+          version: '3.44.0'
+          channel: stable
 
       - name: Resolve workspace
         run: flutter pub get
