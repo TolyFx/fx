@@ -124,6 +124,23 @@ fx_mod_flutter-v0.1.1
 
 存在内部依赖时先发布底层包，确认 hosted 源能够解析新版本后，再发布上层包。
 
+## 标签自动发布
+
+仓库通过 `.github/workflows/publish-package.yml` 统一发布公开的 `fx_*` 包。标签格式为：
+
+```text
+包名-v版本
+```
+
+例如发布 `fx_ability 0.1.1`：
+
+```bash
+git tag fx_ability-v0.1.1
+git push origin fx_ability-v0.1.1
+```
+
+工作流会校验 Workspace 成员、标签版本、`pubspec.yaml` 版本和 `publish_to`，随后执行目标包测试、发布预检和正式发布。GitHub 仓库必须配置 `PUB_CREDENTIALS_B64` Secret；该 Secret 保存经过 Base64 编码的 pub.dev OAuth 凭证，只允许发布维护者管理。
+
 ## 当前注意事项
 
 - `fx_install_plugin` 加入 Workspace 后，Dart SDK 下限由 2.12 提高到 3.6。
