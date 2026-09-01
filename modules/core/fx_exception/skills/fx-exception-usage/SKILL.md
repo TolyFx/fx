@@ -11,7 +11,7 @@ metadata:
 
 ## 适用版本
 
-fx_exception: 0.0.1+2
+fx_exception: ^0.0.1+4
 
 ## 环境检测
 

@@ -1,6 +1,6 @@
 name: fx_ability
-description: "fx 能力抽象层，只定义接口契约，拒绝任何实现。"
-version: 0.0.1
+description: "FrameworkX 宿主能力契约与全局注册入口，不包含平台实现。"
+version: 0.1.1
 homepage: https://github.com/TolyFx/fx
 repository: https://github.com/TolyFx/fx/tree/main/interface/fx_ability
 

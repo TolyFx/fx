@@ -3,6 +3,7 @@
 library;
 
 export 'src/media_ability.dart';
+export 'src/ability.dart';
 export 'src/toast_ability.dart';
 export 'src/upload_ability.dart';
 export 'src/login_ability.dart';

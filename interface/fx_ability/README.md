@@ -1,39 +1,22 @@
-<!--
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
+# fx_ability
 
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/tools/pub/writing-package-pages).
+FrameworkX 的宿主能力抽象层，只定义接口契约，不提供平台或 UI 实现。
 
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/to/develop-packages).
--->
+当前包含登录、媒体、权限、分享、存储、Toast 和上传能力。宿主应用负责实现所需接口；Toast 实现可注册到 `FxAbility` 全局入口。
 
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+## Toast 能力
 
-## Features
-
-TODO: List what your package can do. Maybe include images, gifs, or videos.
-
-## Getting started
-
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
-
-## Usage
-
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
+实现 `Toastable`，即可向业务模块提供统一的 Toast 接口：
 
 ```dart
-const like = 'sample';
+class AppToast extends Toastable {
+  // 由宿主应用实现完整契约。
+}
 ```
 
-## Additional information
+```dart
+FxAbility().registerToast(AppToast());
+FxAbility().toast.success('保存成功');
+```
 
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
+`FxAbility`、`Toastable`、`ToastAction` 和 `ToastType` 保持 `0.1.0` 的公开契约；`ToastAbility` 是兼容 fx 早期命名的类型别名。

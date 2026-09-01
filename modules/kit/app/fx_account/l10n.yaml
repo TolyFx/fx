@@ -1,5 +1,0 @@
-arb-dir: lib/l10n
-template-arb-file: account_en.arb
-output-localization-file: fx_account_localizations.dart
-output-class: FxAccountLocalizations
-output-dir: lib/l10n

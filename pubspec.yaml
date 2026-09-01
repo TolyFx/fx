@@ -37,7 +37,6 @@ workspace:
   - modules/core/fx_exception
   - modules/core/fx_mod
   - modules/core/fx_trace
-  - modules/kit/app/fx_account
   - modules/kit/fx_framework
   - modules/kit/fx_go_router_ext
   - modules/kit/fx_media_picker
