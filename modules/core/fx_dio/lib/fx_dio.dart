@@ -1,4 +1,4 @@
-library fx_dio;
+library;
 
 export 'package:dio/dio.dart'
     show Dio, Response, Options, BaseOptions, DioException, DioExceptionType;

@@ -28,10 +28,8 @@ class _HostEntry {
   final HostOptions options;
   bool enableLog;
 
-  _HostEntry({
-    required this.dio,
-    required this.options,
-  }) : enableLog = options.enableLog;
+  _HostEntry({required this.dio, required this.options})
+    : enableLog = options.enableLog;
 }
 
 class FxDio with TraceMixin {
@@ -58,8 +56,8 @@ class FxDio with TraceMixin {
   }
 
   /// 按类型查找已注册的 Host
-  RequestHost call<T extends RequestHost>() {
-    RequestHost? host;
+  T call<T extends RequestHost>() {
+    T? host;
     for (Host key in _hostMap.keys) {
       if (key is T) {
         host = key;
@@ -77,7 +75,9 @@ class FxDio with TraceMixin {
   /// 注册 Host
   void register(Host host, {HostOptions options = const HostOptions()}) {
     assert(
-        !_hostMap.containsKey(host), '${host.runtimeType} already registered');
+      !_hostMap.containsKey(host),
+      '${host.runtimeType} already registered',
+    );
     _accept(host, options: options);
   }
 
@@ -180,11 +180,8 @@ class FxDio with TraceMixin {
             decryptConvertor,
           );
         } catch (error, stack) {
-          final ({
-            int? httpStatus,
-            String message,
-            String? serverCode
-          }) context = _conversionFailureContext(rep, repData, error);
+          final ({int? httpStatus, String message, String? serverCode})
+          context = _conversionFailureContext(rep, repData, error);
           result = ApiFail(
             trace: RequestException(
               RequestErrorCode.convert,
@@ -201,7 +198,9 @@ class FxDio with TraceMixin {
       } else {
         result = ApiFail(
           trace: const RequestException(
-              RequestErrorCode.emptyData, 'request empty data'),
+            RequestErrorCode.emptyData,
+            'request empty data',
+          ),
         );
       }
     } catch (error, stack) {
@@ -225,7 +224,7 @@ class FxDio with TraceMixin {
 
   /// 生成可诊断但不泄漏完整响应数据的转换异常说明。
   ({int? httpStatus, String message, String? serverCode})
-      _conversionFailureContext(
+  _conversionFailureContext(
     Response<dynamic> response,
     dynamic body,
     Object error,
@@ -296,8 +295,8 @@ class FxDio with TraceMixin {
     Dio dio = Dio();
     dio.options.baseUrl = host.url;
     dio.options.connectTimeout = const Duration(seconds: 30);
-    dio.options.receiveTimeout = const Duration(seconds: 10);
-    dio.options.sendTimeout = const Duration(seconds: 10);
+    dio.options.receiveTimeout = const Duration(seconds: 30);
+    dio.options.sendTimeout = const Duration(seconds: 30);
     dio.options.receiveDataWhenStatusError = true;
     dio.options.validateStatus = (status) => status! > 0;
     if (options.enableLog) {

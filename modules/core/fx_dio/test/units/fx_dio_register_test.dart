@@ -15,6 +15,9 @@ void main() {
       FxDio().register(host, options: const HostOptions(enableLog: false));
       final Dio dio = FxDio()[host];
       expect(dio.options.baseUrl, 'https://dev.example.com');
+      expect(dio.options.connectTimeout, const Duration(seconds: 30));
+      expect(dio.options.sendTimeout, const Duration(seconds: 30));
+      expect(dio.options.receiveTimeout, const Duration(seconds: 30));
     });
 
     test('call 按类型查找', () {
@@ -28,10 +31,7 @@ void main() {
       final TestHost host = TestHost();
       FxDio().register(host, options: const HostOptions(enableLog: false));
       FxDio().unregister(host);
-      expect(
-        () => FxDio()<TestHost>(),
-        throwsA(isA<AssertionError>()),
-      );
+      expect(() => FxDio()<TestHost>(), throwsA(isA<AssertionError>()));
     });
   });
 

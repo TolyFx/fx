@@ -30,6 +30,9 @@ migrate_working_dir/
 .pub-cache/
 .pub/
 **/build/
+# Workspace 只保留根级锁文件，成员包不得维护独立解析结果。
+**/pubspec.lock
+!/pubspec.lock
 
 # Symbolication related
 app.*.symbols

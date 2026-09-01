@@ -8,7 +8,7 @@
 
 | Skill | 说明 |
 |-------|------|
-| [fx-dio-usage](https://github.com/TolyFx/fx/tree/main/modules/fx_dio/skills/fx-dio-usage) | fx_dio 使用指南（Host 定义、Repository、注册、分页、异常、解密） |
+| [fx-dio-usage](https://github.com/TolyFx/fx/tree/main/modules/core/fx_dio/skills/fx-dio-usage) | fx_dio 使用指南（Host 定义、Repository、注册、分页、异常、解密） |
 
 激活 skill 后，AI 可按规范自动生成 Host、Repository、Model 等代码。
 
@@ -18,7 +18,7 @@
 
 ```yaml
 dependencies:
-  fx_dio: ^0.0.5
+  fx_dio: ^0.0.6
 ```
 
 ## 快速开始

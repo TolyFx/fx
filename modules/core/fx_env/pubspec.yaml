@@ -4,8 +4,10 @@ version: 0.0.1+4
 homepage: https://github.com/TolyFx/fx
 
 environment:
-  sdk: ^3.4.0
+  sdk: ^3.6.0
   flutter: ">=1.17.0"
+
+resolution: workspace
 
 dependencies:
   flutter:

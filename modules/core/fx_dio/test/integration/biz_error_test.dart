@@ -83,7 +83,10 @@ void main() {
       );
 
       expect(result.failed, isTrue);
-      expect(result.msg, 'convert exception');
+      expect(
+        result.msg,
+        startsWith('convert exception: HTTP 200, code=401'),
+      );
 
       // 验证 trace.error 是 BizException
       final Trace trace = (result as ApiFail<String>).trace;

@@ -22,6 +22,28 @@ environment:
   sdk: '>=3.10.0 <4.0.0'
   flutter: '>=3.38.0'
 
+workspace:
+  - cli
+  - interface/fx_ability
+  - modules/ability/fx_install_plugin
+  - modules/ability/fx_media
+  - modules/ability/fx_retry
+  - modules/ability/fx_string
+  - modules/core/fx_boot_starter
+  - modules/core/fx_dao
+  - modules/core/fx_dio
+  - modules/core/fx_env
+  - modules/core/fx_event
+  - modules/core/fx_exception
+  - modules/core/fx_mod
+  - modules/core/fx_trace
+  - modules/kit/app/fx_account
+  - modules/kit/fx_framework
+  - modules/kit/fx_go_router_ext
+  - modules/kit/fx_media_picker
+  - modules/kit/fx_mod_flutter
+  - modules/kit/fx_platform_adapter
+
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
 # consider running `flutter pub upgrade --major-versions`. Alternatively,
@@ -40,12 +62,9 @@ dependencies:
   flutter_svg: ^2.0.10+1
 
 
-  fx_boot_starter:
-    path: modules/core/fx_boot_starter
-  fx_dio:
-    path: modules/core/fx_dio
-  fx_platform_adapter:
-    path: modules/kit/fx_platform_adapter
+  fx_boot_starter: ^0.2.0
+  fx_dio: ^0.0.5+2
+  fx_platform_adapter: ^0.0.3+1
   toly_menu: ^0.0.4
   toly_menu_manager: ^0.0.2
   yaml: ^3.1.3
@@ -62,7 +81,7 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^3.0.0
+  flutter_lints: ^5.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
